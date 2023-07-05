@@ -1,10 +1,13 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 public class Player : MonoBehaviour
 {
+    private const float ScreenBoundWidth = (480.0f / 2.0f) - (32.0f / 2.0f);
+    private const float ScreenBoundHeight = (360.0f / 2.0f) - (24.0f / 2.0f);
+
     [SerializeField] SpriteFlash flash;
 
     private int state = 0;
@@ -69,21 +72,21 @@ public class Player : MonoBehaviour
         }
 
         // 画面内移動範囲
-        if (position.y <= -168.0f)
+        if (position.x <= -ScreenBoundWidth)
         {
-            position.y = -168.0f;
+            position.x = -ScreenBoundWidth;
         }
-        if (position.y >= 168.0f)
+        if (position.x >= ScreenBoundWidth)
         {
-            position.y = 168.0f;
+            position.x = ScreenBoundWidth;
         }
-        if (position.x <= -224.0f)
+        if (position.y <= -ScreenBoundHeight)
         {
-            position.x = -224.0f;
+            position.y = -ScreenBoundHeight;
         }
-        if (position.x >= 224.0f)
+        if (position.y >= ScreenBoundHeight)
         {
-            position.x = 224.0f;
+            position.y = ScreenBoundHeight;
         }
     }
 
