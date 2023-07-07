@@ -19,12 +19,14 @@ public class SpriteFlash : MonoBehaviour {
     {
         mat.SetColor("_FlashColor", flashColor);
     }
-/*
+
+#if false
     private void Update() {
 		if(Input.GetKeyDown(KeyCode.Space))
 			Flash();
 	}
-*/
+#endif
+
 	public void Flash(){
         if (flashCoroutine != null)
             //StopCoroutine(flashCoroutine);

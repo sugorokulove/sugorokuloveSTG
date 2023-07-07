@@ -5,24 +5,27 @@ using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 public class Player : MonoBehaviour
 {
-    private const float ScreenBoundWidth = (480.0f / 2.0f) - (32.0f / 2.0f);
-    private const float ScreenBoundHeight = (360.0f / 2.0f) - (24.0f / 2.0f);
+    private const float PlayerBoundWidth = (32.0f / 2.0f);      // 自機境界の幅
+    private const float PlayerBoundHeight = (24.0f / 2.0f);     // 自機境界の高
+    private const int ShootWaitTime = 40;                       // 弾の間隔値
 
-    [SerializeField] SpriteFlash flash;
+    [SerializeField] SpriteFlash flash;                         // 白点滅用
 
-    private int state = 0;
-    private bool noDamage = false;
+    private int state = 0;                                      // 状態
+    private bool noDamage = false;                              // 無敵判定
+    private int shootWait = 0;                                  // 弾の間隔用
 
-    private float speed = 0.0f;
-    private Vector3 position = Vector3.zero;
+    private float speed = 0.0f;                                 // 自機の速度
+    private Vector3 position = Vector3.zero;                    // 自機の座標位置
 
     // Start is called before the first frame update
     void Start()
     {
         state = 1;
         noDamage = true;
+        shootWait = 0;
 
-        speed = 1.0f;
+        speed = 0.5f;
         position = new Vector3(0.0f, -200.0f, 0.0f);
     }
 
@@ -72,21 +75,51 @@ public class Player : MonoBehaviour
         }
 
         // 画面内移動範囲
-        if (position.x <= -ScreenBoundWidth)
+        if (position.x <= -(GameInfo.ScreenBoundWidth - PlayerBoundWidth))
         {
-            position.x = -ScreenBoundWidth;
+            position.x = -(GameInfo.ScreenBoundWidth - PlayerBoundWidth);
         }
-        if (position.x >= ScreenBoundWidth)
+        if (position.x >= (GameInfo.ScreenBoundWidth - PlayerBoundWidth))
         {
-            position.x = ScreenBoundWidth;
+            position.x = (GameInfo.ScreenBoundWidth - PlayerBoundWidth);
         }
-        if (position.y <= -ScreenBoundHeight)
+        if (position.y <= -(GameInfo.ScreenBoundHeight - PlayerBoundHeight))
         {
-            position.y = -ScreenBoundHeight;
+            position.y = -(GameInfo.ScreenBoundHeight - PlayerBoundHeight);
         }
-        if (position.y >= ScreenBoundHeight)
+        if (position.y >= (GameInfo.ScreenBoundHeight - PlayerBoundHeight))
         {
-            position.y = ScreenBoundHeight;
+            position.y = (GameInfo.ScreenBoundHeight - PlayerBoundHeight);
+        }
+
+        // 弾発射
+        shootWait--;
+        if ((shootWait <= 0) && (GameInfo.BulletCount < GameInfo.BulletMax))
+        {
+            shootWait = 0;
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                shootWait = ShootWaitTime;
+
+                Shoot();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 弾生成
+    /// </summary>
+    void Shoot()
+    {
+        var prefab = Resources.Load<GameObject>("Prefabs/Bullet/Bullet");
+        var bullet = Instantiate(prefab);
+        bullet.transform.position = position;
+
+        GameInfo.BulletCount++;
+        if (GameInfo.BulletCount >= GameInfo.BulletMax)
+        {
+            GameInfo.BulletCount = GameInfo.BulletMax;
         }
     }
 
