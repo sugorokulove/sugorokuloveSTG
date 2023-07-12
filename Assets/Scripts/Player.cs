@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 public class Player : MonoBehaviour
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour
     private const int ShootWaitTime = 40;                       // 弾の間隔値
 
     [SerializeField] SpriteFlash flash;                         // 白点滅用
+    [SerializeField] Sprite[] costumes;                         // コスチューム画像
 
     private int state = 0;                                      // 状態
     private bool noDamage = false;                              // 無敵判定
@@ -21,6 +23,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Assert.IsTrue(costumes.Length == GameInfo.PowerUpMax, $"costumeは{GameInfo.PowerUpMax}個、値が設定されている必要があります。");
+
         state = 1;
         noDamage = true;
         shootWait = 0;

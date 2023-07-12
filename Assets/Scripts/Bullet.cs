@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Bullet : MonoBehaviour
 {
+    [SerializeField] Sprite[] costumes;                 // パワーアップ画像
+
     private const float BulletBoundWidth = 32.0f;       // 弾境界の幅
     private const float BulletBoundHeight = 32.0f;      // 弾境界の高
 
@@ -12,7 +15,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Assert.IsTrue(costumes.Length == GameInfo.PowerUpMax, $"costumeは{GameInfo.PowerUpMax}個、値が設定されている必要があります。");
     }
 
     // Update is called once per frame
