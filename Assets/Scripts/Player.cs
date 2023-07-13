@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DebugControl();
+
         switch (state)
         {
             case 1:
@@ -110,6 +112,17 @@ public class Player : MonoBehaviour
             }
         }
     }
+    
+    /// <summary>
+    /// デバッグ操作
+    /// </summary>
+    void DebugControl()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Item();
+        }
+    }
 
     /// <summary>
     /// 弾生成
@@ -125,6 +138,16 @@ public class Player : MonoBehaviour
         {
             GameInfo.BulletCount = GameInfo.BulletMax;
         }
+    }
+    
+    /// <summary>
+    /// アイテム生成
+    /// </summary>
+    void Item()
+    {
+        var prefab = Resources.Load<GameObject>("Prefabs/Item/Item");
+        var item = Instantiate(prefab);
+        item.transform.position = new Vector3(position.x + Random.Range(-10, 10), position.y + 50);
     }
 
     void Damage()
