@@ -1,35 +1,42 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Assertions;
 
-public class Bullet : MonoBehaviour
+public class Bullet : ObjectBase
 {
-    [SerializeField] Sprite[] costumes;                 // パワーアップ画像
+    [SerializeField] Sprite[] m_costumes;           // パワーアップ画像
 
-    private const float BulletBoundWidth = 32.0f;       // 弾境界の幅
-    private const float BulletBoundHeight = 32.0f;      // 弾境界の高
+    private Vector3 m_position = Vector3.zero;      // 弾の位置・座標
 
-    private const float Speed = 1.0f;                   // 弾の速度
-
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    /// <param name="position">初期位置・座標</param>
+    /// <param name="power">自機のパワーアップ回数による画像指定</param>
+    public void Initialize(Vector3 position, int power)
     {
-        Assert.IsTrue(costumes.Length == GameInfo.PowerUpMax, $"costumeは{GameInfo.PowerUpMax}個、値が設定されている必要があります。");
+        Assert.IsTrue(m_costumes.Length == GameInfo.PowerType, $"costumeは{GameInfo.PowerType}個、値が設定されている必要があります。");
+
+        Initialize(1.0f);
+
+        SpriteRenderer.sprite = m_costumes[power];
+
+        m_position = position;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// 更新
+    /// </summary>
     void Update()
     {
-        transform.Translate(0.0f, Speed, 0.0f);
-        if (transform.position.y >= (GameInfo.ScreenBoundHeight + BulletBoundHeight))
+        m_position.y += Speed;
+
+        if (m_position.y >= (GameInfo.Instance.ScreenBound.y + BoundSize.y))
         {
-            GameInfo.BulletCount--;
-            if (GameInfo.BulletCount <= 0)
-            {
-                GameInfo.BulletCount = 0;
-            }
+            GameInfo.Instance.BulletCount--;
+            GameInfo.Instance.BulletCount = Mathf.Max(GameInfo.Instance.BulletCount, 0);
             Destroy(gameObject);
         }
+
+        Transform.position = m_position;
     }
 }

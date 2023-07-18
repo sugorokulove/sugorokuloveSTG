@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 597fedb714a63564c9990605d01ab7bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flash: {fileID: 7467219985342168424}
-  costumes:
+  m_flash: {fileID: 7467219985342168424}
+  m_costumes:
   - {fileID: 21300000, guid: f64507f6a329ae343bbaba1535bba14b, type: 3}
   - {fileID: 21300000, guid: 401f7fdd1f266ea4da96e27475afa626, type: 3}
   - {fileID: 21300000, guid: 33426b96621baca4dba8ed414df5eeac, type: 3}

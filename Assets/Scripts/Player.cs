@@ -1,60 +1,61 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Assertions;
-using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
-public class Player : MonoBehaviour
+public class Player : ObjectBase
 {
-    private const float PlayerBoundWidth = (32.0f / 2.0f);      // 自機境界の幅
-    private const float PlayerBoundHeight = (24.0f / 2.0f);     // 自機境界の高
-    private const int ShootWaitTime = 40;                       // 弾の間隔値
+    private const int ShootWaitTime = 40;               // 弾の間隔値
 
-    [SerializeField] SpriteFlash flash;                         // 白点滅用
-    [SerializeField] Sprite[] costumes;                         // コスチューム画像
+    [SerializeField] SpriteFlash m_flash;               // 白点滅用
+    [SerializeField] Sprite[] m_costumes;               // コスチューム画像
 
-    private int state = 0;                                      // 状態
-    private bool noDamage = false;                              // 無敵判定
-    private int shootWait = 0;                                  // 弾の間隔用
+    private int m_state = 0;                            // 状態
+    private bool m_isDamage = false;                    // 無敵判定
+    private int m_shootWait = 0;                        // 弾の間隔用
 
-    private float speed = 0.0f;                                 // 自機の速度
-    private Vector3 position = Vector3.zero;                    // 自機の座標位置
+    private Vector3 m_position = Vector3.zero;          // 自機の座標位置
 
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    public void Initialize()
     {
-        Assert.IsTrue(costumes.Length == GameInfo.PowerUpMax, $"costumeは{GameInfo.PowerUpMax}個、値が設定されている必要があります。");
+        Assert.IsTrue(m_costumes.Length == GameInfo.PowerType, $"costumeは{GameInfo.PowerType}個、値が設定されている必要があります。");
 
-        state = 1;
-        noDamage = true;
-        shootWait = 0;
+        Initialize(0.5f);
 
-        speed = 0.5f;
-        position = new Vector3(0.0f, -200.0f, 0.0f);
+        m_state = 1;
+        m_isDamage = false;
+        m_shootWait = 0;
+
+        m_position = new Vector3(0.0f, -200.0f, 0.0f);
+
+        SetImageByPower();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// 更新
+    /// </summary>
     void Update()
     {
         DebugControl();
 
-        switch (state)
+        switch (m_state)
         {
             case 1:
-                position.y++;
-                if (position.y >= -120)
+                m_position.y++;
+                if (m_position.y >= -120)
                 {
-                    state = 2;
-                    noDamage = false;
+                    m_state = 2;
+                    m_isDamage = true;
                 }
-                flash.Flash();
+                m_flash.Flash();
                 break;
             case 2:
                 PlayerControl();
                 break;
         }
 
-        transform.position = position;
+        Transform.position = m_position;
     }
 
     /// <summary>
@@ -65,50 +66,50 @@ public class Player : MonoBehaviour
         // キーボード操作
         if (Input.GetKey(KeyCode.D))
         {
-            position.x += speed;
+            m_position.x += Speed;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            position.x -= speed;
+            m_position.x -= Speed;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            position.y += speed;
+            m_position.y += Speed;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            position.y -= speed;
+            m_position.y -= Speed;
         }
 
         // 画面内移動範囲
-        if (position.x <= -(GameInfo.ScreenBoundWidth - PlayerBoundWidth))
+        if (m_position.x <= -(GameInfo.Instance.ScreenBound.x - BoundSize.x))
         {
-            position.x = -(GameInfo.ScreenBoundWidth - PlayerBoundWidth);
+            m_position.x = -(GameInfo.Instance.ScreenBound.x - BoundSize.x);
         }
-        if (position.x >= (GameInfo.ScreenBoundWidth - PlayerBoundWidth))
+        if (m_position.x >= (GameInfo.Instance.ScreenBound.x - BoundSize.x))
         {
-            position.x = (GameInfo.ScreenBoundWidth - PlayerBoundWidth);
+            m_position.x = (GameInfo.Instance.ScreenBound.x - BoundSize.x);
         }
-        if (position.y <= -(GameInfo.ScreenBoundHeight - PlayerBoundHeight))
+        if (m_position.y <= -(GameInfo.Instance.ScreenBound.y - BoundSize.y))
         {
-            position.y = -(GameInfo.ScreenBoundHeight - PlayerBoundHeight);
+            m_position.y = -(GameInfo.Instance.ScreenBound.y - BoundSize.y);
         }
-        if (position.y >= (GameInfo.ScreenBoundHeight - PlayerBoundHeight))
+        if (m_position.y >= (GameInfo.Instance.ScreenBound.y - BoundSize.y))
         {
-            position.y = (GameInfo.ScreenBoundHeight - PlayerBoundHeight);
+            m_position.y = (GameInfo.Instance.ScreenBound.y - BoundSize.y);
         }
 
         // 弾発射
-        shootWait--;
-        if ((shootWait <= 0) && (GameInfo.BulletCount < GameInfo.BulletMax))
+        m_shootWait--;
+        if ((m_shootWait <= 0) && (GameInfo.Instance.BulletCount < GameInfo.BulletMax))
         {
-            shootWait = 0;
+            m_shootWait = 0;
 
             if (Input.GetKey(KeyCode.Space))
             {
-                shootWait = ShootWaitTime;
+                m_shootWait = ShootWaitTime;
 
-                Shoot();
+                GenerateBullet();
             }
         }
     }
@@ -118,43 +119,63 @@ public class Player : MonoBehaviour
     /// </summary>
     void DebugControl()
     {
+        // アイテム生成
         if (Input.GetKeyDown(KeyCode.I))
         {
-            Item();
+            GenerateItem();
+        }
+
+        // パワーアップ
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            GameInfo.Instance.PowerUpCount++;
+            GameInfo.Instance.PowerUpCount = Mathf.Min(GameInfo.Instance.PowerUpCount, GameInfo.PowerMax);
+            SetImageByPower();
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            GameInfo.Instance.PowerUpCount--;
+            GameInfo.Instance.PowerUpCount = Mathf.Max(GameInfo.Instance.PowerUpCount, 0);
+            SetImageByPower();
         }
     }
 
     /// <summary>
     /// 弾生成
     /// </summary>
-    void Shoot()
+    void GenerateBullet()
     {
         var prefab = Resources.Load<GameObject>("Prefabs/Bullet/Bullet");
         var bullet = Instantiate(prefab);
-        bullet.transform.position = position;
+        bullet.GetComponent<Bullet>().Initialize(
+            new Vector3(m_position.x, m_position.y + 10),
+            GameInfo.Instance.PowerUpCount);
 
-        GameInfo.BulletCount++;
-        if (GameInfo.BulletCount >= GameInfo.BulletMax)
-        {
-            GameInfo.BulletCount = GameInfo.BulletMax;
-        }
+        GameInfo.Instance.BulletCount++;
+        GameInfo.Instance.BulletCount = Mathf.Min(GameInfo.Instance.BulletCount, GameInfo.BulletMax);
     }
     
     /// <summary>
     /// アイテム生成
     /// </summary>
-    void Item()
+    void GenerateItem()
     {
         var prefab = Resources.Load<GameObject>("Prefabs/Item/Item");
         var item = Instantiate(prefab);
-        item.transform.position = new Vector3(position.x + Random.Range(-10, 10), position.y + 50);
+        item.GetComponent<Item>().Initialize(new Vector3(m_position.x + Random.Range(-10, 10), m_position.y + 50));
+    }
+    
+    /// <summary>
+    /// パワーアップ回数によるsprite設定
+    /// </summary>
+    void SetImageByPower()
+    {
+        SpriteRenderer.sprite = m_costumes[GameInfo.Instance.PowerUpCount];
+        BoundSize = SpriteRenderer.bounds.size * 0.5f;
     }
 
     void Damage()
     {
-        if (!noDamage)
-        {
-
-        }
+        if (!m_isDamage) return;
     }
 }

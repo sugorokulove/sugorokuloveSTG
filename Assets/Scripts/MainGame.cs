@@ -1,17 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MainGame : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
+        // 自機の作成
         var prefab = Resources.Load<GameObject>("Prefabs/Plane/Player");
-        Instantiate(prefab);
+        var player = Instantiate(prefab);
+        player.GetComponent<Player>().Initialize();
     }
 
-    // Update is called once per frame
     void Update()
     {
         

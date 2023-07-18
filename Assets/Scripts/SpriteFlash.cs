@@ -10,10 +10,11 @@ public class SpriteFlash : MonoBehaviour {
 	private Material mat;
     private IEnumerator flashCoroutine;
 
-	private void Awake() {
+	private void Awake()
+    {
 		mat = GetComponent<SpriteRenderer>().material;
         flashCoroutine = null;
-	}
+    }
 
     private void Start()
     {
@@ -29,8 +30,10 @@ public class SpriteFlash : MonoBehaviour {
 
 	public void Flash(){
         if (flashCoroutine != null)
+        {
             //StopCoroutine(flashCoroutine);
             return;
+        }
 
         flashCoroutine = DoFlash();
         StartCoroutine(flashCoroutine);
@@ -49,6 +52,7 @@ public class SpriteFlash : MonoBehaviour {
             SetFlashAmount(1f - perc);
             yield return null;
         }
+
         SetFlashAmount(0);
 
         flashCoroutine = null;

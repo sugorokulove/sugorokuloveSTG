@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aef8ad40ace4854ebdcb60b09d2f8fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  costumes:
+  m_costumes:
   - {fileID: 21300000, guid: 150545240c2018147a80a07b9067ed8e, type: 3}
   - {fileID: 21300000, guid: e23100d6fa61beb488ea02d5ee2af2e0, type: 3}
   - {fileID: 21300000, guid: 03846bd7a0c06ce40b9a6d689ffc9d22, type: 3}
