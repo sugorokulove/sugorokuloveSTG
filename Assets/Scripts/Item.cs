@@ -24,9 +24,17 @@ public class Item : ObjectBase
 
         if (transform.position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y))
         {
-            Destroy(gameObject);
+            Remove();
         }
 
         Transform.position = m_position;
+    }
+
+    /// <summary>
+    /// 自機に接触した際に自身を破壊する
+    /// </summary>
+    public void Remove()
+    {
+        Destroy(gameObject);
     }
 }

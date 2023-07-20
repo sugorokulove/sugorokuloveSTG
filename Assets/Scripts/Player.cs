@@ -59,6 +59,18 @@ public class Player : ObjectBase
     }
 
     /// <summary>
+    /// 自機と何かの当たり判定
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<Item>(out var item))
+        {
+            item.Remove();
+        }
+    }
+
+    /// <summary>
     /// 自機操作
     /// </summary>
     void PlayerControl()
@@ -171,7 +183,7 @@ public class Player : ObjectBase
     void SetImageByPower()
     {
         SpriteRenderer.sprite = m_costumes[GameInfo.Instance.PowerUpCount];
-        BoundSize = SpriteRenderer.bounds.size * 0.5f;
+        SetSize(0.5f);
     }
 
     void Damage()

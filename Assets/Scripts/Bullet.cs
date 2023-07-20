@@ -18,9 +18,10 @@ public class Bullet : ObjectBase
 
         Initialize(1.0f);
 
-        SpriteRenderer.sprite = m_costumes[power];
-
         m_position = position;
+
+        SpriteRenderer.sprite = m_costumes[power];
+        SetSize();
     }
 
     /// <summary>

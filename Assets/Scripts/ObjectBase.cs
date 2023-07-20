@@ -2,6 +2,9 @@
 
 public class ObjectBase : MonoBehaviour
 {
+    [SerializeField] BoxCollider2D m_collider;                      // 当たり判定用コライダー
+    public BoxCollider2D Collider => m_collider;
+
     public SpriteRenderer SpriteRenderer { get; set; } = null;      // SpriteRendererコンポーネント参照用
     public Transform Transform { get; set; } = null;                // Transformのキャッシュ(少し速くなる)
 
@@ -13,7 +16,18 @@ public class ObjectBase : MonoBehaviour
         SpriteRenderer = GetComponent<SpriteRenderer>();
         Transform = transform;
 
-        BoundSize = SpriteRenderer.bounds.size;
         Speed = speed;
+
+        SetSize();
+    }
+
+    /// <summary>
+    /// サイズ調整
+    /// </summary>
+    /// <param name="rate"></param>
+    public void SetSize(float rate = 1.0f)
+    {
+        BoundSize = SpriteRenderer.bounds.size * rate;
+        Collider.size = SpriteRenderer.bounds.size;
     }
 }
