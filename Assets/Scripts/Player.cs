@@ -4,6 +4,7 @@ using UnityEngine.Assertions;
 public class Player : ObjectBase
 {
     private const int ShootWaitTime = 40;               // 弾の間隔値
+    private const float PowerUpSpeed = 0.25f;           // 弾の速度調整
 
     [SerializeField] SpriteFlash m_flash;               // 白点滅用
     [SerializeField] Sprite[] m_costumes;               // コスチューム画像
@@ -192,7 +193,7 @@ public class Player : ObjectBase
         {
             GameInfo.Instance.PowerUpCount++;
             SetImageByPower();
-            Speed += 0.25f;
+            Speed += PowerUpSpeed;
         }
     }
 
@@ -205,7 +206,7 @@ public class Player : ObjectBase
         {
             GameInfo.Instance.PowerUpCount--;
             SetImageByPower();
-            Speed -= 0.25f;
+            Speed -= PowerUpSpeed;
         }
     }
 
