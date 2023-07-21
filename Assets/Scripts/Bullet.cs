@@ -16,7 +16,7 @@ public class Bullet : ObjectBase
     {
         Assert.IsTrue(m_costumes.Length == GameInfo.PowerType, $"costumeは{GameInfo.PowerType}個、値が設定されている必要があります。");
 
-        Initialize(1.0f);
+        Initialize(1.25f);
 
         m_position = position;
 

@@ -66,6 +66,7 @@ public class Player : ObjectBase
     {
         if (collision.TryGetComponent<Item>(out var item))
         {
+            PowerUp();
             item.Remove();
         }
     }
@@ -140,15 +141,11 @@ public class Player : ObjectBase
         // パワーアップ
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            GameInfo.Instance.PowerUpCount++;
-            GameInfo.Instance.PowerUpCount = Mathf.Min(GameInfo.Instance.PowerUpCount, GameInfo.PowerMax);
-            SetImageByPower();
+            PowerUp();
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            GameInfo.Instance.PowerUpCount--;
-            GameInfo.Instance.PowerUpCount = Mathf.Max(GameInfo.Instance.PowerUpCount, 0);
-            SetImageByPower();
+            PowerDown();
         }
     }
 
@@ -184,6 +181,32 @@ public class Player : ObjectBase
     {
         SpriteRenderer.sprite = m_costumes[GameInfo.Instance.PowerUpCount];
         SetSize(0.5f);
+    }
+    
+    /// <summary>
+    /// パワーアップ処理
+    /// </summary>
+    void PowerUp()
+    {
+        if (GameInfo.Instance.PowerUpCount < GameInfo.PowerMax)
+        {
+            GameInfo.Instance.PowerUpCount++;
+            SetImageByPower();
+            Speed += 0.25f;
+        }
+    }
+
+    /// <summary>
+    /// パワーダウン処理
+    /// </summary>
+    void PowerDown()
+    {
+        if (GameInfo.Instance.PowerUpCount > 0)
+        {
+            GameInfo.Instance.PowerUpCount--;
+            SetImageByPower();
+            Speed -= 0.25f;
+        }
     }
 
     void Damage()
