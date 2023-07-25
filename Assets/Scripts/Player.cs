@@ -12,6 +12,7 @@ public class Player : ObjectBase
     private int m_state = 0;                            // 状態
     private bool m_isDamage = false;                    // 無敵判定
     private int m_shootWait = 0;                        // 弾の間隔用
+    private int Hp = 0;                                 // 自機の体力
 
     private Vector3 m_position = Vector3.zero;          // 自機の座標位置
 
@@ -27,6 +28,7 @@ public class Player : ObjectBase
         m_state = 1;
         m_isDamage = false;
         m_shootWait = 0;
+        Hp = 1;
 
         m_position = new Vector3(0.0f, -200.0f, 0.0f);
 
@@ -69,6 +71,12 @@ public class Player : ObjectBase
         {
             PowerUp();
             item.Remove();
+        }
+
+        if (collision.TryGetComponent<EnemyBase>(out var enemy))
+        {
+            Damage(100);
+            enemy.Damage(100);
         }
     }
 
@@ -148,6 +156,12 @@ public class Player : ObjectBase
         {
             PowerDown();
         }
+
+        // 敵の生成
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            GenerateEnemy();
+        }
     }
 
     /// <summary>
@@ -174,7 +188,17 @@ public class Player : ObjectBase
         var item = Instantiate(prefab);
         item.GetComponent<Item>().Initialize(new Vector3(m_position.x + Random.Range(-10, 10), m_position.y + 50));
     }
-    
+
+    /// <summary>
+    /// 敵の生成
+    /// </summary>
+    void GenerateEnemy()
+    {
+        var prefab = Resources.Load<GameObject>("Prefabs/Plane/Enemy001");
+        var enemy = Instantiate(prefab);
+        enemy.GetComponent<Enemy001>().Initialize();
+    }
+
     /// <summary>
     /// パワーアップ回数によるsprite設定
     /// </summary>
@@ -210,8 +234,19 @@ public class Player : ObjectBase
         }
     }
 
-    void Damage()
+    /// <summary>
+    /// ダメージ
+    /// </summary>
+    /// <param name="power"></param>
+    void Damage(int power)
     {
         if (!m_isDamage) return;
+
+        Hp -= power;
+        if (Hp <= 0)
+        {
+            GameInfo.Instance.MainGame.ReStart();
+            Destroy(gameObject);
+        }
     }
 }

@@ -7,6 +7,10 @@ public class GameInfo : SingletonMonoBehaviour<GameInfo>
     public const int PowerType = 3;                             // 自機の形状数
     public const int PowerMax = PowerType - 1;                  // パワーアップ回数
 
+    // SerializeField
+    [SerializeField] MainGame m_mainGame;                       // MainGameのインスタンス
+    public MainGame MainGame => m_mainGame;
+
     // 変数
     public Vector2 ScreenBound { get; set; } = Vector2.zero;    // 画面境界座標
     public int BulletCount { get; set; } = 0;                   // 弾生成カウント
