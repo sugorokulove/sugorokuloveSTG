@@ -12,7 +12,7 @@ public class Player : ObjectBase
     private int m_state = 0;                            // 状態
     private bool m_isDamage = false;                    // 無敵判定
     private int m_shootWait = 0;                        // 弾の間隔用
-    private int Hp = 0;                                 // 自機の体力
+    private int m_hp = 0;                                 // 自機の体力
 
     private Vector3 m_position = Vector3.zero;          // 自機の座標位置
 
@@ -28,7 +28,7 @@ public class Player : ObjectBase
         m_state = 1;
         m_isDamage = false;
         m_shootWait = 0;
-        Hp = 1;
+        m_hp = 1;
 
         m_position = new Vector3(0.0f, -200.0f, 0.0f);
 
@@ -242,8 +242,8 @@ public class Player : ObjectBase
     {
         if (!m_isDamage) return;
 
-        Hp -= power;
-        if (Hp <= 0)
+        m_hp -= power;
+        if (m_hp <= 0)
         {
             GameInfo.Instance.MainGame.ReStart();
             Destroy(gameObject);
