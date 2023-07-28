@@ -67,12 +67,14 @@ public class Player : ObjectBase
     /// <param name="collision"></param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // アイテム
         if (collision.TryGetComponent<Item>(out var item))
         {
             PowerUp();
             item.Remove();
         }
 
+        // 敵
         if (collision.TryGetComponent<EnemyBase>(out var enemy))
         {
             Damage(100);
@@ -200,6 +202,16 @@ public class Player : ObjectBase
     }
 
     /// <summary>
+    /// 爆発の生成
+    /// </summary>
+    void GenerateExplosion()
+    {
+        var prefab = Resources.Load<GameObject>("Prefabs/Explosion/PlayerExplosion");
+        var explosion = Instantiate(prefab);
+        explosion.GetComponent<Explosion>().Initialize(m_position);
+    }
+
+    /// <summary>
     /// パワーアップ回数によるsprite設定
     /// </summary>
     void SetImageByPower()
@@ -235,9 +247,9 @@ public class Player : ObjectBase
     }
 
     /// <summary>
-    /// ダメージ
+    /// ダメージ処理
     /// </summary>
-    /// <param name="power"></param>
+    /// <param name="power">攻撃力(ダメージ値)</param>
     void Damage(int power)
     {
         if (!m_isDamage) return;
@@ -245,6 +257,8 @@ public class Player : ObjectBase
         m_hp -= power;
         if (m_hp <= 0)
         {
+            m_state = 3;
+            GenerateExplosion();
             GameInfo.Instance.MainGame.ReStart();
             Destroy(gameObject);
         }

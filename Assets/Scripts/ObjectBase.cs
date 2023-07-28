@@ -11,6 +11,10 @@ public class ObjectBase : MonoBehaviour
     public Vector3 BoundSize { get; set; } = Vector3.zero;          // オブジェクトのサイズ
     public float Speed { get; set; } = 0.0f;                        // 移動速度
 
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    /// <param name="speed">移動速度</param>
     public void Initialize(float speed)
     {
         SpriteRenderer = GetComponent<SpriteRenderer>();
