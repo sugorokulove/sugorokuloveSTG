@@ -6,6 +6,7 @@ public class Bullet : ObjectBase
     [SerializeField] Sprite[] m_costumes;           // パワーアップ画像
 
     private Vector3 m_position = Vector3.zero;      // 弾の位置・座標
+    private int m_power = 0;                        // 弾の威力(自機のパワーアップ回数)
 
     /// <summary>
     /// 初期化
@@ -19,6 +20,7 @@ public class Bullet : ObjectBase
         Initialize(1.25f);
 
         m_position = position;
+        m_power = power + 1;
 
         SpriteRenderer.sprite = m_costumes[power];
         SetSize();
@@ -33,11 +35,33 @@ public class Bullet : ObjectBase
 
         if (m_position.y >= (GameInfo.Instance.ScreenBound.y + BoundSize.y))
         {
-            GameInfo.Instance.BulletCount--;
-            GameInfo.Instance.BulletCount = Mathf.Max(GameInfo.Instance.BulletCount, 0);
-            Destroy(gameObject);
+            Remove();
         }
 
         Transform.position = m_position;
+    }
+
+    /// <summary>
+    /// 弾と何かの当たり判定
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // 敵
+        if (collision.TryGetComponent<EnemyBase>(out var enemy))
+        {
+            enemy.Damage(m_power);
+            Remove();
+        }
+    }
+
+    /// <summary>
+    /// 弾の削除
+    /// </summary>
+    private void Remove()
+    {
+        GameInfo.Instance.BulletCount--;
+        GameInfo.Instance.BulletCount = Mathf.Max(GameInfo.Instance.BulletCount, 0);
+        Destroy(gameObject);
     }
 }
