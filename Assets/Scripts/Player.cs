@@ -250,7 +250,7 @@ public class Player : ObjectBase
     /// ダメージ処理
     /// </summary>
     /// <param name="power">攻撃力(ダメージ値)</param>
-    void Damage(int power)
+    public void Damage(int power)
     {
         if (!m_isDamage) return;
 

@@ -9,6 +9,9 @@ public abstract class EnemyBase : ObjectBase
 
     public abstract void Move();
 
+    /// <summary>
+    /// 更新
+    /// </summary>
     void Update()
     {
         Move();
@@ -36,5 +39,15 @@ public abstract class EnemyBase : ObjectBase
         var prefab = Resources.Load<GameObject>("Prefabs/Explosion/EnemyExplosion");
         var explosion = Instantiate(prefab);
         explosion.GetComponent<Explosion>().Initialize(transform.position);
+    }
+
+    /// <summary>
+    /// ミサイルの生成
+    /// </summary>
+    public void GenerateMissile()
+    {
+        var prefab = Resources.Load<GameObject>("Prefabs/Missile/Missile");
+        var missile = Instantiate(prefab);
+        missile.GetComponent<Missile>().Initialize(transform.position);
     }
 }

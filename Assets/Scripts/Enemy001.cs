@@ -2,6 +2,8 @@
 
 public class Enemy001 : EnemyBase
 {
+    [SerializeField] private Countdown m_countdown;
+
     private Vector3 m_position = Vector3.zero;
 
     /// <summary>
@@ -13,6 +15,7 @@ public class Enemy001 : EnemyBase
 
         Hp = 1;
         m_position = new Vector3(Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f));
+        m_countdown.Initialize(() => GenerateMissile());
     }
 
     /// <summary>
