@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainGame : MonoBehaviour
 {
@@ -35,6 +37,10 @@ public class MainGame : MonoBehaviour
         if (Stock > 0)
         {
             Invoke(nameof(GeneratePlayer), 1.0f);
+        }
+        else
+        {
+            Invoke(nameof(GenerateGameover), 1.0f);
         }
     }
 
@@ -72,11 +78,36 @@ public class MainGame : MonoBehaviour
     /// </summary>
     GameObject GenerateStock()
     {
-        var prefab = Resources.Load<GameObject>("Prefabs/Plane/Stock");
+        var prefab = Resources.Load<GameObject>("Prefabs/UI/Stock");
         var stock = Instantiate(prefab);
         stock.transform.position = new Vector3(
             -GameInfo.Instance.ScreenBound.x + Stock * 16 + 16,
             -GameInfo.Instance.ScreenBound.y + 16);
         return stock;
+    }
+
+    /// <summary>
+    /// ゲームオーバー生成
+    /// </summary>
+    void GenerateGameover()
+    {
+        var prefab = Resources.Load<GameObject>("Prefabs/UI/Gameover");
+        Instantiate(prefab);
+
+        prefab = Resources.Load<GameObject>("Prefabs/UI/Veil");
+        Instantiate(prefab);
+
+        StartCoroutine(TransitionToTitle(3.0f));
+    }
+
+    /// <summary>
+    /// シーン遷移(指定秒後)
+    /// </summary>
+    /// <param name="second">秒数</param>
+    IEnumerator TransitionToTitle(float second)
+    {
+        yield return new WaitForSeconds(second);
+
+        SceneManager.LoadScene("TitleScene");
     }
 }
