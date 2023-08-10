@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpriteFlash : MonoBehaviour {
 
@@ -12,13 +13,25 @@ public class SpriteFlash : MonoBehaviour {
 
 	private void Awake()
     {
-		mat = GetComponent<SpriteRenderer>().material;
+        if (TryGetComponent<SpriteRenderer>(out SpriteRenderer renderer))
+        {
+            mat = renderer.material;
+        }
+        else if (TryGetComponent<Image>(out Image image))
+        {
+            mat = image.material;
+        }
         flashCoroutine = null;
     }
 
     private void Start()
     {
         mat.SetColor("_FlashColor", flashColor);
+    }
+    
+    private void OnDestroy()
+    {
+        SetFlashAmount(0);
     }
 
 #if false
@@ -28,6 +41,9 @@ public class SpriteFlash : MonoBehaviour {
 	}
 #endif
 
+    /// <summary>
+    /// １回点滅
+    /// </summary>
 	public void Flash(){
         if (flashCoroutine != null)
         {
@@ -57,6 +73,44 @@ public class SpriteFlash : MonoBehaviour {
 
         flashCoroutine = null;
     }
+
+    /// <summary>
+    /// ループ点滅
+    /// </summary>
+    public void FlashLoop()
+    {
+        flashCoroutine = DoFlashLoop();
+        StartCoroutine(flashCoroutine);
+    }
+
+    private IEnumerator DoFlashLoop()
+    {
+        float lerpTime = 0;
+        float lerpValue = -1;
+
+        while (true)
+        {
+            lerpTime += (lerpValue * Time.deltaTime);
+            float perc = lerpTime / flashDuration;
+
+            SetFlashAmount(perc);
+            yield return null;
+
+            if (lerpTime >= flashDuration)
+            {
+                lerpValue = -1;
+            }
+            if (lerpTime <= 0)
+            {
+                lerpValue = 1;
+            }
+        }
+    }
+
+    /// <summary>
+    /// シェーダーに値を渡す
+    /// </summary>
+    /// <param name="flashAmount">割合</param>
     private void SetFlashAmount(float flashAmount)
     {
         mat.SetFloat("_FlashAmount", flashAmount);
