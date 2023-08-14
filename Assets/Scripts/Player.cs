@@ -12,7 +12,7 @@ public class Player : ObjectBase
     private int m_state = 0;                            // 状態
     private bool m_isDamage = false;                    // 無敵判定
     private int m_shootWait = 0;                        // 弾の間隔用
-    private int m_hp = 0;                                 // 自機の体力
+    private float m_speedMin, m_speedMax;               // 自機の速度の最小値/最大値
 
     private Vector3 m_position = Vector3.zero;          // 自機の座標位置
 
@@ -28,7 +28,8 @@ public class Player : ObjectBase
         m_state = 1;
         m_isDamage = false;
         m_shootWait = 0;
-        m_hp = 1;
+        m_speedMin = Speed;
+        m_speedMax = Speed + PowerUpSpeed * GameInfo.PowerMax;
 
         m_position = new Vector3(0.0f, -200.0f, 0.0f);
 
@@ -156,7 +157,7 @@ public class Player : ObjectBase
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            PowerDown();
+            PowerDown(1);
         }
 
         // 敵の生成
@@ -225,25 +226,22 @@ public class Player : ObjectBase
     /// </summary>
     void PowerUp()
     {
-        if (GameInfo.Instance.PowerUpCount < GameInfo.PowerMax)
-        {
-            GameInfo.Instance.PowerUpCount++;
-            SetImageByPower();
-            Speed += PowerUpSpeed;
-        }
+        GameInfo.Instance.PowerUpCount = Mathf.Min(GameInfo.PowerMax, GameInfo.Instance.PowerUpCount + 1);
+        SetImageByPower();
+        Speed = Mathf.Min(m_speedMax, Speed + PowerUpSpeed);
     }
 
     /// <summary>
     /// パワーダウン処理
     /// </summary>
-    void PowerDown()
+    bool PowerDown(int power)
     {
-        if (GameInfo.Instance.PowerUpCount > 0)
-        {
-            GameInfo.Instance.PowerUpCount--;
-            SetImageByPower();
-            Speed -= PowerUpSpeed;
-        }
+        int result = GameInfo.Instance.PowerUpCount - power;
+        GameInfo.Instance.PowerUpCount = Mathf.Max(0, result);
+        SetImageByPower();
+        Speed = Mathf.Max(m_speedMin, Speed - PowerUpSpeed);
+
+        return result < 0;
     }
 
     /// <summary>
@@ -254,8 +252,7 @@ public class Player : ObjectBase
     {
         if (!m_isDamage) return;
 
-        m_hp -= power;
-        if (m_hp <= 0)
+        if (PowerDown(power))
         {
             m_state = 3;
             GenerateExplosion();

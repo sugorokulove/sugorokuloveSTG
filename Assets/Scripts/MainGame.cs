@@ -34,6 +34,8 @@ public class MainGame : MonoBehaviour
     /// </summary>
     public void ReStart()
     {
+        GameInfo.Instance.PowerUpCount = 0;
+
         if (Stock > 0)
         {
             Invoke(nameof(GeneratePlayer), 1.0f);
