@@ -19,6 +19,9 @@ public class MainGame : MonoBehaviour
 
     void Start()
     {
+        GameInfo.Instance.StageNo = 0;
+        GameInfo.Instance.PowerUpCount = 0;
+
         // 指定数残機追加
         for (int i = 0; i < m_stock; i++)
         {

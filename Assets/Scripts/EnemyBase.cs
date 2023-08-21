@@ -3,7 +3,7 @@
 public abstract class EnemyBase : ObjectBase
 {
     [SerializeField] SpriteFlash m_flash;       // 白点滅用
-    public SpriteFlash lash => m_flash;
+    public SpriteFlash Flash => m_flash;
 
     public int Hp { get; set; } = 0;
 

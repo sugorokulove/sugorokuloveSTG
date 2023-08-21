@@ -30,7 +30,6 @@ public class Player : ObjectBase
         m_shootWait = 0;
         m_speedMin = Speed;
         m_speedMax = Speed + PowerUpSpeed * GameInfo.PowerMax;
-
         m_position = new Vector3(0.0f, -200.0f, 0.0f);
 
         SetImageByPower();
