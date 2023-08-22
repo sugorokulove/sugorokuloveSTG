@@ -23,8 +23,7 @@ public class Background : ObjectBase
     /// <summary>
     /// 初期設定
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="sprite">Sprite</param>
+    /// <param name="index">背景画像の番号</param>
     /// <param name="position">初期位置</param>
     /// <param name="speed">速度</param>
     public void Initialize(int index, Vector3 position, float speed)
