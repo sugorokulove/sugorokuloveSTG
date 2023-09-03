@@ -7,6 +7,7 @@ public class ObjectBase : MonoBehaviour
     public Transform Transform { get; set; } = null;                // Transformのキャッシュ(少し速くなる)
     public float Speed { get; set; }                                // 速度
     public Vector3 BoundSize { get; set; } = Vector3.zero;          // オブジェクトのサイズ
+
     /// <summary>
     /// 初期化
     /// </summary>

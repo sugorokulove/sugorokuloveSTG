@@ -1,18 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
-public class StageSpriteFile
-{
-    [SerializeField] Sprite[] m_files;
-    public Sprite[] Files => m_files;
-}
-
 public class BackgroundManager : MonoBehaviour
 {
     [SerializeField] float m_speed;
     [SerializeField] Background[] m_background;
-    [SerializeField] StageSpriteFile[] m_stages;
 
     void Start()
     {
@@ -20,14 +12,14 @@ public class BackgroundManager : MonoBehaviour
         for (int i = 0; i < m_background.Length; i++)
         {
             m_background[i].Initialize(i, new Vector3(0.0f, i * 360.0f, 0.0f), m_speed);
-            m_background[i].SetBackgroundSprite(GetStageSprite(GameInfo.Instance.StageNo, m_background[i].Index));
+            m_background[i].SetBackgroundSprite(GetStageSprite(m_background[i].Index));
         }
     }
 
     void Update()
     {
         var size = GameInfo.Instance.ScreenSize;
-        var lastIndex = m_stages[GameInfo.Instance.StageNo].Files.Length;
+        var lastIndex = GameInfo.Instance.StageBgFiles.Length;
 
         foreach (var bg in m_background)
         {
@@ -54,30 +46,26 @@ public class BackgroundManager : MonoBehaviour
                 {
                     // 「位置の調整」と「画像の入れ替え」
                     bg.Position = new Vector3(0.0f, size.y + (bg.Position.y + size.y), 0.0f);
-                    bg.SetBackgroundSprite(GetStageSprite(GameInfo.Instance.StageNo, bg.Index += 2));
+                    bg.SetBackgroundSprite(GetStageSprite(bg.Index += 2));
                 }
             }
         }
+
+        GameInfo.Instance.StageMove += Math.Abs(m_speed);
     }
 
     /// <summary>
     /// 背景画像の取得
     /// </summary>
-    /// <param name="stage">ステージ数</param>
     /// <param name="no">何番目</param>
     /// <returns>Sprite</returns>
-    Sprite GetStageSprite(int stage, int no)
+    Sprite GetStageSprite(int no)
     {
-        if (stage >= m_stages.Length)
+        if (no >= GameInfo.Instance.StageBgFiles.Length)
         {
-            stage = m_stages.Length - 1;
+            no = GameInfo.Instance.StageBgFiles.Length - 1;
         }
 
-        if (no >= m_stages[stage].Files.Length)
-        {
-            no = m_stages[stage].Files.Length - 1;
-        }
-
-        return m_stages[stage].Files[no];
+        return GameInfo.Instance.StageBgFiles[no];
     }
 }

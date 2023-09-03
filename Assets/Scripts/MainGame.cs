@@ -6,24 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class MainGame : MonoBehaviour
 {
-    [SerializeField] private int m_stock = 3;                               // 残機数指定
-
     private GameObject[] m_stockList = null;                                // 残機管理(GameObject)
-    public int Stock => m_stockList.Where(obj => obj != null).Count();      // 残機数
+    public int GetStock => m_stockList.Where(obj => obj != null).Count();   // 残機数
 
     void Awake()
     {
-        m_stockList = new GameObject[m_stock];
+        m_stockList = new GameObject[GameInfo.Instance.Stock];
         Array.Fill(m_stockList, null);
     }
 
     void Start()
     {
-        GameInfo.Instance.StageNo = 0;
-        GameInfo.Instance.PowerUpCount = 0;
-
         // 指定数残機追加
-        for (int i = 0; i < m_stock; i++)
+        for (int i = 0; i < GameInfo.Instance.Stock; i++)
         {
             AddStock();
         }
@@ -39,7 +34,7 @@ public class MainGame : MonoBehaviour
     {
         GameInfo.Instance.PowerUpCount = 0;
 
-        if (Stock > 0)
+        if (GetStock > 0)
         {
             Invoke(nameof(GeneratePlayer), 1.0f);
         }
@@ -54,7 +49,7 @@ public class MainGame : MonoBehaviour
     /// </summary>
     private void AddStock()
     {
-        m_stockList[Stock] = GenerateStock();
+        m_stockList[GetStock] = GenerateStock();
     }
 
     /// <summary>
@@ -62,8 +57,8 @@ public class MainGame : MonoBehaviour
     /// </summary>
     private void RemoveStock()
     {
-        Destroy(m_stockList[Stock - 1]);
-        m_stockList[Stock - 1] = null;
+        Destroy(m_stockList[GetStock - 1]);
+        m_stockList[GetStock - 1] = null;
     }
 
     /// <summary>
@@ -86,7 +81,7 @@ public class MainGame : MonoBehaviour
         var prefab = Resources.Load<GameObject>("Prefabs/UI/Stock");
         var stock = Instantiate(prefab);
         stock.transform.position = new Vector3(
-            -GameInfo.Instance.ScreenBound.x + Stock * 16 + 16,
+            -GameInfo.Instance.ScreenBound.x + GetStock * 16 + 16,
             -GameInfo.Instance.ScreenBound.y + 16);
         return stock;
     }
