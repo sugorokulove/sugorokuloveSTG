@@ -2,12 +2,20 @@
 
 public abstract class EnemyBase : ObjectBase
 {
-    [SerializeField] SpriteFlash m_flash;       // 白点滅用
-    public SpriteFlash Flash => m_flash;
-
-    public int Hp { get; set; } = 0;
+    [SerializeField] int m_hp;                      // HP
+    [SerializeField] bool m_isAttack;               // 攻撃の有無
+    [SerializeField] SpriteFlash m_flash;           // 白点滅用
+    [SerializeField] private Countdown m_countdown; // 攻撃用カウントダウン
 
     public abstract void Move();
+
+    void Start()
+    {
+        if (m_isAttack)
+        {
+            m_countdown.Initialize(() => GenerateMissile());
+        }
+    }
 
     /// <summary>
     /// 更新
@@ -23,8 +31,10 @@ public abstract class EnemyBase : ObjectBase
     /// <param name="power">攻撃力(ダメージ値)</param>
     public void Damage(int power)
     {
-        Hp -= power;
-        if (Hp <= 0)
+        m_flash.FlashLoop(3);
+
+        m_hp -= power;
+        if (m_hp <= 0)
         {
             GenerateExplosion();
             Destroy(gameObject);

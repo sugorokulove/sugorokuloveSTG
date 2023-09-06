@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!212 &9065365891032948918
 SpriteRenderer:
@@ -56,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 97ca360371c7ca64f975fc43ebbe0a11, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,6 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b473f58474b64874eaee0ca3e317e2d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_hp: 1
+  m_isAttack: 0
   m_flash: {fileID: 218113097119099784}
   m_countdown: {fileID: 1921116216511187658}
 --- !u!114 &218113097119099784
@@ -115,7 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashColor: {r: 1, g: 1, b: 1, a: 1}
-  flashDuration: 0.1
+  flashDuration: 0.05
 --- !u!114 &1921116216511187658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,8 +130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0c7b82ba5699d74ea949558291cce45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_min: 100
-  m_max: 400
+  m_min: 1
+  m_max: 4
 --- !u!61 &7425126305837740194
 BoxCollider2D:
   m_ObjectHideFlags: 0

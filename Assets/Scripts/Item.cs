@@ -10,7 +10,7 @@ public class Item : ObjectBase
     /// <param name="position">初期位置・座標</param>
     public void Initialize(Vector3 position)
     {
-        Initialize(-0.1f);
+        Initialize();
 
         m_position = position;
     }

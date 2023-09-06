@@ -67,8 +67,9 @@ public class MainGame : MonoBehaviour
     void GeneratePlayer()
     {
         var prefab = Resources.Load<GameObject>("Prefabs/Plane/Player");
-        var player = Instantiate(prefab);
-        player.GetComponent<Player>().Initialize();
+        var gameobject = Instantiate(prefab);
+        var player = gameobject.GetComponent<Player>();
+        player.Initialize(new Vector3(0.0f, -GameInfo.Instance.ScreenBound.y, 0.0f));
 
         RemoveStock();
     }

@@ -2,17 +2,19 @@
 
 public class ObjectBase : MonoBehaviour
 {
+    [SerializeField] float m_speed;
+    public float Speed { get => m_speed; set => m_speed = value; }  // 速度
+
     public SpriteRenderer SpriteRenderer { get; set; } = null;      // SpriteRendererコンポーネント参照用
     public BoxCollider2D BoxCollider { get; set; } = null;          // BoxCollider2Dコンポーネント参照用
     public Transform Transform { get; set; } = null;                // Transformのキャッシュ(少し速くなる)
-    public float Speed { get; set; }                                // 速度
     public Vector3 BoundSize { get; set; } = Vector3.zero;          // オブジェクトのサイズ
 
     /// <summary>
     /// 初期化
     /// </summary>
     /// <param name="speed">移動速度</param>
-    public void Initialize(float speed)
+    public void Initialize()
     {
         if (TryGetComponent<SpriteRenderer>(out var renderer))
         {
@@ -23,8 +25,6 @@ public class ObjectBase : MonoBehaviour
             BoxCollider = collider;
         }
         Transform = transform;
-
-        Speed = speed;
 
         SetSize();
     }

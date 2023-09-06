@@ -51,7 +51,8 @@ public class EnemyGenerator : MonoBehaviour
     void GenerateEnemy(EnemyType type)
     {
         var prefab = Resources.Load<GameObject>($"Prefabs/Plane/{type.ToString()}");
-        var enemy = UnityEngine.GameObject.Instantiate(prefab);
-        enemy.GetComponent<Enemy001>().Initialize();
+        var gameobject = UnityEngine.GameObject.Instantiate(prefab);
+        var enemy = gameobject.GetComponent<Enemy001>();
+        enemy.Initialize(new Vector3(0.0f, GameInfo.Instance.ScreenBound.y, 0.0f));
     }
 }

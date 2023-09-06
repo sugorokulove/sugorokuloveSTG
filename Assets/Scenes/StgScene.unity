@@ -199,15 +199,15 @@ MonoBehaviour:
     m_enemyGroup:
     - m_type: 0
       m_count: 5
-      m_interval: 10
+      m_interval: 5
       m_distance: 50
-    - m_type: 1
+    - m_type: 0
       m_count: 5
-      m_interval: 10
+      m_interval: 5
       m_distance: 150
-    - m_type: 2
+    - m_type: 0
       m_count: 5
-      m_interval: 10
+      m_interval: 5
       m_distance: 250
   - m_files:
     - {fileID: 21300000, guid: 9c73bc4d39df1c04e9ebc7ff4a568c6a, type: 3}
@@ -444,6 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3912dd0ee7d79f4a8837c79c734537c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_speed: 0
 --- !u!1 &1548175761
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,3 +592,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3912dd0ee7d79f4a8837c79c734537c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_speed: 0

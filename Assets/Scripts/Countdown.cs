@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Countdown : MonoBehaviour
 {
-    [SerializeField] private int m_min;             // 乱数：最小値
-    [SerializeField] private int m_max;             // 乱数：最大値
+    [SerializeField] private float m_min;             // 乱数：最小値
+    [SerializeField] private float m_max;             // 乱数：最大値
 
-    private int m_count = 0;                        // カウント
+    private float m_count = 0;                        // カウント
     private System.Action m_callback = null;        // コールバック
 
     /// <summary>
@@ -18,22 +19,21 @@ public class Countdown : MonoBehaviour
     {
         m_count = Random.Range(m_min, m_max);
         m_callback = action;
+        StartCoroutine(CountDownCoroutine());
     }
 
     /// <summary>
     /// 非同期なカウントダウン
     /// </summary>
-    /// <returns>なし</returns>
-    private void Update()
+    IEnumerator CountDownCoroutine()
     {
-        if (m_count >= 0)
+        while(true)
         {
-            m_count--;
-            if (m_count < 0)
-            {
-                m_callback();
-                m_count = Random.Range(m_min, m_max);
-            }
+            yield return new WaitForSeconds(m_count);
+
+            m_callback();
+
+            m_count = Random.Range(m_min, m_max);
         }
     }
 }

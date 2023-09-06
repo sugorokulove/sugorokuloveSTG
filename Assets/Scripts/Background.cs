@@ -9,7 +9,7 @@ public class Background : ObjectBase
     
     void Start()
     {
-        Initialize(0.0f);
+        Initialize();
 
         m_position = Vector3.zero;
     }

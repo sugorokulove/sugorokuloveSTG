@@ -77,23 +77,24 @@ public class SpriteFlash : MonoBehaviour {
     /// <summary>
     /// ループ点滅
     /// </summary>
-    public void FlashLoop()
+    public void FlashLoop(int repeat = -1)
     {
-        flashCoroutine = DoFlashLoop();
+        flashCoroutine = DoFlashLoop(repeat);
         StartCoroutine(flashCoroutine);
     }
 
-    private IEnumerator DoFlashLoop()
+    private IEnumerator DoFlashLoop(int repeat)
     {
         float lerpTime = 0;
-        float lerpValue = -1;
+        float lerpValue = 1;
 
-        while (true)
+        while (repeat != 0)
         {
             lerpTime += (lerpValue * Time.deltaTime);
             float perc = lerpTime / flashDuration;
 
             SetFlashAmount(perc);
+
             yield return null;
 
             if (lerpTime >= flashDuration)
@@ -103,8 +104,15 @@ public class SpriteFlash : MonoBehaviour {
             if (lerpTime <= 0)
             {
                 lerpValue = 1;
+
+                if (repeat >= 0)
+                {
+                    repeat--;
+                }
             }
         }
+
+        SetFlashAmount(0);
     }
 
     /// <summary>

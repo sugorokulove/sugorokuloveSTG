@@ -4,7 +4,7 @@ using UnityEngine.Assertions;
 public class Player : ObjectBase
 {
     private const int ShootWaitTime = 40;               // 弾の間隔値
-    private const float PowerUpSpeed = 0.25f;           // 弾の速度調整
+    private const float PowerUpSpeed = 0.25f;           // 自機の速度調整
 
     [SerializeField] SpriteFlash m_flash;               // 白点滅用
     [SerializeField] Sprite[] m_costumes;               // コスチューム画像
@@ -19,18 +19,20 @@ public class Player : ObjectBase
     /// <summary>
     /// 初期化
     /// </summary>
-    public void Initialize()
+    public void Initialize(Vector3 position)
     {
         Assert.IsTrue(m_costumes.Length == GameInfo.PowerType, $"costumeは{GameInfo.PowerType}個、値が設定されている必要があります。");
 
-        Initialize(0.5f);
+        Initialize();
 
         m_state = 1;
         m_isDamage = false;
         m_shootWait = 0;
         m_speedMin = Speed;
         m_speedMax = Speed + PowerUpSpeed * GameInfo.PowerMax;
-        m_position = new Vector3(0.0f, -200.0f, 0.0f);
+
+        position.y -= BoundSize.y;
+        m_position = position;
 
         SetImageByPower();
     }
@@ -158,12 +160,6 @@ public class Player : ObjectBase
         {
             PowerDown(1);
         }
-
-        // 敵の生成
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            GenerateEnemy();
-        }
     }
 
     /// <summary>
@@ -189,16 +185,6 @@ public class Player : ObjectBase
         var prefab = Resources.Load<GameObject>("Prefabs/Item/Item");
         var item = Instantiate(prefab);
         item.GetComponent<Item>().Initialize(new Vector3(m_position.x + Random.Range(-10, 10), m_position.y + 50));
-    }
-
-    /// <summary>
-    /// 敵の生成
-    /// </summary>
-    void GenerateEnemy()
-    {
-        var prefab = Resources.Load<GameObject>("Prefabs/Plane/Enemy001");
-        var enemy = Instantiate(prefab);
-        enemy.GetComponent<Enemy001>().Initialize();
     }
 
     /// <summary>
