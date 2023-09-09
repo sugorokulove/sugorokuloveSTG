@@ -13,7 +13,6 @@ public class ObjectBase : MonoBehaviour
     /// <summary>
     /// 初期化
     /// </summary>
-    /// <param name="speed">移動速度</param>
     public void Initialize()
     {
         if (TryGetComponent<SpriteRenderer>(out var renderer))

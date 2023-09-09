@@ -7,7 +7,9 @@ public abstract class EnemyBase : ObjectBase
     [SerializeField] SpriteFlash m_flash;           // 白点滅用
     [SerializeField] private Countdown m_countdown; // 攻撃用カウントダウン
 
-    public abstract void Move();
+    public abstract void Init();                    // 初期化
+    public abstract void Move();                    // 移動
+    public abstract Vector3 Position { get; set; }  // 位置座標
 
     void Start()
     {
@@ -58,6 +60,6 @@ public abstract class EnemyBase : ObjectBase
     {
         var prefab = Resources.Load<GameObject>("Prefabs/Missile/Missile");
         var missile = Instantiate(prefab);
-        missile.GetComponent<Missile>().Initialize(transform.position);
+        missile.GetComponent<Missile>().Init(transform.position);
     }
 }

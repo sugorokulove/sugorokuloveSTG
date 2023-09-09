@@ -197,17 +197,20 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 2422fccc84d350e43a663470dc5abcf5, type: 3}
     - {fileID: 21300000, guid: a164d4a5d62313949bb1a5a3af052982, type: 3}
     m_enemyGroup:
-    - m_type: 0
-      m_count: 5
-      m_interval: 5
+    - m_enemyType: 1
+      m_locationType: 2
+      m_count: 11
+      m_interval: 10
       m_distance: 50
-    - m_type: 0
-      m_count: 5
-      m_interval: 5
+    - m_enemyType: 1
+      m_locationType: 2
+      m_count: 11
+      m_interval: 10
       m_distance: 150
-    - m_type: 0
-      m_count: 5
-      m_interval: 5
+    - m_enemyType: 1
+      m_locationType: 2
+      m_count: 11
+      m_interval: 10
       m_distance: 250
   - m_files:
     - {fileID: 21300000, guid: 9c73bc4d39df1c04e9ebc7ff4a568c6a, type: 3}
@@ -222,7 +225,8 @@ MonoBehaviour:
     - {fileID: 21300000, guid: f8707a5c5bfa9164283f3bfbcdd26c7a, type: 3}
     - {fileID: 21300000, guid: d76ee23f4eca0a34ea0874628ad4aa17, type: 3}
     m_enemyGroup:
-    - m_type: 0
+    - m_enemyType: 0
+      m_locationType: 0
       m_count: 5
       m_interval: 10
       m_distance: 50
@@ -239,7 +243,8 @@ MonoBehaviour:
     - {fileID: 21300000, guid: b2b73e8251d6d8f4cb8fbb08ceb84383, type: 3}
     - {fileID: 21300000, guid: 3d5be6577633a014c8aab21553ef65db, type: 3}
     m_enemyGroup:
-    - m_type: 0
+    - m_enemyType: 0
+      m_locationType: 0
       m_count: 5
       m_interval: 10
       m_distance: 50

@@ -69,7 +69,8 @@ public class MainGame : MonoBehaviour
         var prefab = Resources.Load<GameObject>("Prefabs/Plane/Player");
         var gameobject = Instantiate(prefab);
         var player = gameobject.GetComponent<Player>();
-        player.Initialize(new Vector3(0.0f, -GameInfo.Instance.ScreenBound.y, 0.0f));
+        player.Init();
+        player.Position = new Vector3(0.0f, -(GameInfo.Instance.ScreenBound.y + player.BoundSize.y), 0.0f);
 
         RemoveStock();
     }

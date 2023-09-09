@@ -13,7 +13,7 @@ public class Bullet : ObjectBase
     /// </summary>
     /// <param name="position">初期位置・座標</param>
     /// <param name="power">自機のパワーアップ回数による画像指定</param>
-    public void Initialize(Vector3 position, int power)
+    public void Init(Vector3 position, int power)
     {
         Assert.IsTrue(m_costumes.Length == GameInfo.PowerType, $"costumeは{GameInfo.PowerType}個、値が設定されている必要があります。");
 

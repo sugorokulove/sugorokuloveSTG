@@ -15,11 +15,16 @@ public class Player : ObjectBase
     private float m_speedMin, m_speedMax;               // 自機の速度の最小値/最大値
 
     private Vector3 m_position = Vector3.zero;          // 自機の座標位置
+    public Vector3 Position
+    {
+        get => m_position;
+        set => m_position = value;
+    }
 
     /// <summary>
     /// 初期化
     /// </summary>
-    public void Initialize(Vector3 position)
+    public void Init()
     {
         Assert.IsTrue(m_costumes.Length == GameInfo.PowerType, $"costumeは{GameInfo.PowerType}個、値が設定されている必要があります。");
 
@@ -30,9 +35,6 @@ public class Player : ObjectBase
         m_shootWait = 0;
         m_speedMin = Speed;
         m_speedMax = Speed + PowerUpSpeed * GameInfo.PowerMax;
-
-        position.y -= BoundSize.y;
-        m_position = position;
 
         SetImageByPower();
     }
@@ -169,7 +171,7 @@ public class Player : ObjectBase
     {
         var prefab = Resources.Load<GameObject>("Prefabs/Bullet/Bullet");
         var bullet = Instantiate(prefab);
-        bullet.GetComponent<Bullet>().Initialize(
+        bullet.GetComponent<Bullet>().Init(
             new Vector3(m_position.x, m_position.y + 10),
             GameInfo.Instance.PowerUpCount);
 
@@ -184,7 +186,7 @@ public class Player : ObjectBase
     {
         var prefab = Resources.Load<GameObject>("Prefabs/Item/Item");
         var item = Instantiate(prefab);
-        item.GetComponent<Item>().Initialize(new Vector3(m_position.x + Random.Range(-10, 10), m_position.y + 50));
+        item.GetComponent<Item>().Init(new Vector3(m_position.x + Random.Range(-10, 10), m_position.y + 50));
     }
 
     /// <summary>

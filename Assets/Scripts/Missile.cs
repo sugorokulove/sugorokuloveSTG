@@ -8,7 +8,7 @@ public class Missile : ObjectBase
     /// 初期化
     /// </summary>
     /// <param name="position">初期位置・座標</param>
-    public void Initialize(Vector3 position)
+    public void Init(Vector3 position)
     {
         Initialize();
 
