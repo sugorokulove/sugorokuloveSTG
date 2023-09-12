@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
 
-public class Enemy001 : EnemyBase
+public class Enemy003 : EnemyBase
 {
-    [SerializeField] private float m_angleSpeed;    // 角度の変化量
-    [SerializeField] private float m_radius;        // 半径(移動幅)
-
-    private float m_angle = 0.0f;                   // 角度
     private Vector3 m_position = Vector3.zero;      // 位置
+    private Vector3 m_move = Vector3.zero;          // 移動量
 
     /// <summary>
     /// 初期化
@@ -15,8 +12,9 @@ public class Enemy001 : EnemyBase
     {
         Initialize();
 
-        m_angle = 0.0f;
         m_position = new Vector3(px, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
+        m_move = (target - m_position).normalized * Speed;
+        Transform.rotation = Quaternion.FromToRotation(Vector3.up, m_move);
     }
 
     /// <summary>
@@ -24,10 +22,7 @@ public class Enemy001 : EnemyBase
     /// </summary>
     public override void Move()
     {
-        m_position.x = Mathf.Sin(m_angle * Mathf.PI) * m_radius;
-        m_position.y += Speed;
-
-        m_angle += m_angleSpeed;
+        m_position += m_move;
 
         if (m_position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y))
         {

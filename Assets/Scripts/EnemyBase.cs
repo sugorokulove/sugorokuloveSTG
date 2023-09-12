@@ -2,14 +2,13 @@
 
 public abstract class EnemyBase : ObjectBase
 {
-    [SerializeField] int m_hp;                      // HP
-    [SerializeField] bool m_isAttack;               // 攻撃の有無
-    [SerializeField] SpriteFlash m_flash;           // 白点滅用
-    [SerializeField] private Countdown m_countdown; // 攻撃用カウントダウン
+    [SerializeField] int m_hp;                              // HP
+    [SerializeField] bool m_isAttack;                       // 攻撃の有無
+    [SerializeField] SpriteFlash m_flash;                   // 白点滅用
+    [SerializeField] private Countdown m_countdown;         // 攻撃用カウントダウン
 
-    public abstract void Init();                    // 初期化
-    public abstract void Move();                    // 移動
-    public abstract Vector3 Position { get; set; }  // 位置座標
+    public abstract void Init(float px, Vector3 target);    // 初期化
+    public abstract void Move();                            // 移動
 
     void Start()
     {

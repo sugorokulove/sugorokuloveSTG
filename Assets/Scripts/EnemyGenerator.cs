@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
 {
+    private const int LocationArea = 5;     // ランダム範囲
+
     private int m_generatorIndex = 0;       // 監視している敵グループ
 
     void Awake()
@@ -17,7 +19,7 @@ public class EnemyGenerator : MonoBehaviour
         if (m_generatorIndex < GameInfo.Instance.StageEnemyGroup.Length)
         {
             // 移動距離を監視して敵グループを生成する
-            if (GameInfo.Instance.StageEnemyGroup[m_generatorIndex].Distance >= GameInfo.Instance.StageMove)
+            if (GameInfo.Instance.StageMove >= GameInfo.Instance.StageEnemyGroup[m_generatorIndex].Distance)
             {
                 StartCoroutine(GenerateGroup(GameInfo.Instance.StageEnemyGroup[m_generatorIndex]));
                 m_generatorIndex++;
@@ -33,16 +35,29 @@ public class EnemyGenerator : MonoBehaviour
     IEnumerator GenerateGroup(EnemyGroup generator)
     {
         int count = generator.Count;
-        float distance = generator.Distance;
+        float distance = generator.Distance - generator.Interval;   // 即時生成調整
 
         var px = GeneratePosition(generator.LocationType, generator.Count);
         int index = 0;
+
+        var target = Vector3.zero;
+        if (generator.TargetType == TargetType.First)
+        {
+            if (GameInfo.Instance.Player != null)
+            {
+                target = GameInfo.Instance.Player.Position;
+            }
+        }
 
         while (count > 0)
         {
             if ((GameInfo.Instance.StageMove - distance) >= generator.Interval)
             {
-                GenerateEnemy(generator.EnemyType, px[index]);
+                if (generator.TargetType == TargetType.Every)
+                {
+                    target = (GameInfo.Instance.Player != null) ? GameInfo.Instance.Player.Position : Vector3.zero;
+                }
+                GenerateEnemy(generator.EnemyType, px[index], target);
                 distance += generator.Interval;
                 count--;
                 index++;
@@ -54,13 +69,12 @@ public class EnemyGenerator : MonoBehaviour
     /// <summary>
     /// 敵の生成
     /// </summary>
-    void GenerateEnemy(EnemyType type, int px)
+    void GenerateEnemy(EnemyType type, int px, Vector3 target)
     {
         var prefab = Resources.Load<GameObject>($"Prefabs/Plane/{type.ToString()}");
         var gameobject = UnityEngine.GameObject.Instantiate(prefab);
         var enemy = gameobject.GetComponent<EnemyBase>();
-        enemy.Init();
-        enemy.Position = new Vector3(px * 40.0f, GameInfo.Instance.ScreenBound.y + enemy.BoundSize.y, 0.0f);
+        enemy.Init(px * 40.0f, target);
     }
 
     /// <summary>
@@ -81,13 +95,23 @@ public class EnemyGenerator : MonoBehaviour
                 break;
             // 横一列のランダム一点
             case LocationType.RandomPoint:
-                int max = count / 2;
-                int min = -max;
-                positions = Enumerable.Repeat<int>(UnityEngine.Random.Range(min, max), count).ToArray();
+                if (GameInfo.Instance.Player != null)
+                {
+                    int point = 0;
+                    if (GameInfo.Instance.Player.Position.x >= 0)
+                    {
+                        point = UnityEngine.Random.Range(-LocationArea, 0);
+                    }
+                    else
+                    {
+                        point = UnityEngine.Random.Range(0, LocationArea);
+                    }
+                    positions = Enumerable.Repeat<int>(point, count).ToArray();
+                }
                 break;
             // 横一列のランダム
             case LocationType.RandomHorizontal:
-                positions = Enumerable.Range(-count / 2, count).ToArray();      // 連続の値で埋める
+                positions = Enumerable.Range(-LocationArea, count).ToArray();   // 連続の値で埋める
                 positions = positions.OrderBy(_ => Guid.NewGuid()).ToArray();   // シャッフル
                 break;
         }

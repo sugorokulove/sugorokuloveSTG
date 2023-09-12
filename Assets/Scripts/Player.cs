@@ -91,23 +91,27 @@ public class Player : ObjectBase
     /// </summary>
     void PlayerControl()
     {
+        var direction = Vector3.zero;
+
         // キーボード操作
         if (Input.GetKey(KeyCode.D))
         {
-            m_position.x += Speed;
+            direction.x += Speed;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            m_position.x -= Speed;
+            direction.x -= Speed;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            m_position.y += Speed;
+            direction.y += Speed;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            m_position.y -= Speed;
+            direction.y -= Speed;
         }
+
+        m_position += direction.normalized * Speed;
 
         // 画面内移動範囲
         if (m_position.x <= -(GameInfo.Instance.ScreenBound.x - BoundSize.x))

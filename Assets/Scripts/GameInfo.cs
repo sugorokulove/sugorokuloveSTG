@@ -27,6 +27,7 @@ public class GameInfo : SingletonMonoBehaviour<GameInfo>
     public float StageMove { get; set; } = 0.0f;                // 移動距離
     public int BulletCount { get; set; } = 0;                   // 弾生成カウント
     public int PowerUpCount { get; set; } = 0;                  // パワーアップ回数
+    public Player Player { get; set; } = null;                  // Playerクラス
 
     /// <summary>
     /// 変更があった場合、昇順に並べ替える

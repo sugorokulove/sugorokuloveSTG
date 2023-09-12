@@ -197,20 +197,23 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 2422fccc84d350e43a663470dc5abcf5, type: 3}
     - {fileID: 21300000, guid: a164d4a5d62313949bb1a5a3af052982, type: 3}
     m_enemyGroup:
-    - m_enemyType: 1
-      m_locationType: 2
-      m_count: 11
-      m_interval: 10
+    - m_enemyType: 2
+      m_locationType: 1
+      m_targetType: 1
+      m_count: 5
+      m_interval: 5
       m_distance: 50
-    - m_enemyType: 1
-      m_locationType: 2
-      m_count: 11
-      m_interval: 10
+    - m_enemyType: 2
+      m_locationType: 1
+      m_targetType: 1
+      m_count: 5
+      m_interval: 5
       m_distance: 150
-    - m_enemyType: 1
-      m_locationType: 2
-      m_count: 11
-      m_interval: 10
+    - m_enemyType: 2
+      m_locationType: 1
+      m_targetType: 1
+      m_count: 5
+      m_interval: 5
       m_distance: 250
   - m_files:
     - {fileID: 21300000, guid: 9c73bc4d39df1c04e9ebc7ff4a568c6a, type: 3}
@@ -227,6 +230,7 @@ MonoBehaviour:
     m_enemyGroup:
     - m_enemyType: 0
       m_locationType: 0
+      m_targetType: 0
       m_count: 5
       m_interval: 10
       m_distance: 50
@@ -245,6 +249,7 @@ MonoBehaviour:
     m_enemyGroup:
     - m_enemyType: 0
       m_locationType: 0
+      m_targetType: 0
       m_count: 5
       m_interval: 10
       m_distance: 50

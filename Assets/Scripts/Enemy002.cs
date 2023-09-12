@@ -3,14 +3,15 @@
 public class Enemy002 : EnemyBase
 {
     private Vector3 m_position = Vector3.zero;      // 位置
-    public override Vector3 Position { get => m_position; set => m_position = value; }
 
     /// <summary>
     /// 初期化
     /// </summary>
-    public override void Init()
+    public override void Init(float px, Vector3 target)
     {
         Initialize();
+
+        m_position = new Vector3(px, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
     }
 
     /// <summary>
