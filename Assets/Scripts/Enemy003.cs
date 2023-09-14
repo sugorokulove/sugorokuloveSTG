@@ -2,7 +2,6 @@
 
 public class Enemy003 : EnemyBase
 {
-    private Vector3 m_position = Vector3.zero;      // 位置
     private Vector3 m_move = Vector3.zero;          // 移動量
 
     /// <summary>
@@ -12,8 +11,8 @@ public class Enemy003 : EnemyBase
     {
         Initialize();
 
-        m_position = new Vector3(px, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
-        m_move = (target - m_position).normalized * Speed;
+        Transform.position = new Vector3(px, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
+        m_move = (target - Transform.position).normalized * Speed;
         Transform.rotation = Quaternion.FromToRotation(Vector3.up, m_move);
     }
 
@@ -22,13 +21,6 @@ public class Enemy003 : EnemyBase
     /// </summary>
     public override void Move()
     {
-        m_position += m_move;
-
-        if (m_position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y))
-        {
-            Destroy(gameObject);
-        }
-
-        Transform.position = m_position;
+        Transform.position += m_move;
     }
 }

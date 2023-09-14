@@ -70,7 +70,6 @@ public class MainGame : MonoBehaviour
         var gameobject = Instantiate(prefab);
         var player = gameobject.GetComponent<Player>();
         player.Init();
-        player.Position = new Vector3(0.0f, -(GameInfo.Instance.ScreenBound.y + player.BoundSize.y), 0.0f);
 
         GameInfo.Instance.Player = player;
 

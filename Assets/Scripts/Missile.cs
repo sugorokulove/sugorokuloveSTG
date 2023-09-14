@@ -2,7 +2,7 @@
 
 public class Missile : ObjectBase
 {
-    private Vector3 m_position = Vector3.zero;      // 弾の位置・座標
+    private Vector3 m_move = Vector3.zero;
 
     /// <summary>
     /// 初期化
@@ -12,7 +12,9 @@ public class Missile : ObjectBase
     {
         Initialize();
 
-        m_position = position;
+        Transform.position = position;
+
+        m_move = new Vector3(0.0f, Speed, 0.0f);
     }
 
     /// <summary>
@@ -20,14 +22,12 @@ public class Missile : ObjectBase
     /// </summary>
     void Update()
     {
-        m_position.y += Speed;
+        Transform.position += m_move;
 
-        if (m_position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y))
+        if (Transform.position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y))
         {
             Destroy(gameObject);
         }
-
-        Transform.position = m_position;
     }
 
     /// <summary>

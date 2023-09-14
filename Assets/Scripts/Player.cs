@@ -14,13 +14,6 @@ public class Player : ObjectBase
     private int m_shootWait = 0;                        // 弾の間隔用
     private float m_speedMin, m_speedMax;               // 自機の速度の最小値/最大値
 
-    private Vector3 m_position = Vector3.zero;          // 自機の座標位置
-    public Vector3 Position
-    {
-        get => m_position;
-        set => m_position = value;
-    }
-
     /// <summary>
     /// 初期化
     /// </summary>
@@ -37,6 +30,8 @@ public class Player : ObjectBase
         m_speedMax = Speed + PowerUpSpeed * GameInfo.PowerMax;
 
         SetImageByPower();
+
+        Transform.position = new Vector3(0.0f, -(GameInfo.Instance.ScreenBound.y + BoundSize.y), 0.0f);
     }
 
     /// <summary>
@@ -49,20 +44,12 @@ public class Player : ObjectBase
         switch (m_state)
         {
             case 1:
-                m_position.y++;
-                if (m_position.y >= -120)
-                {
-                    m_state = 2;
-                    m_isDamage = true;
-                }
-                m_flash.Flash();
+                PlayerEntry();
                 break;
             case 2:
                 PlayerControl();
                 break;
         }
-
-        Transform.position = m_position;
     }
 
     /// <summary>
@@ -87,10 +74,30 @@ public class Player : ObjectBase
     }
 
     /// <summary>
+    /// 自機の登場演出
+    /// </summary>
+    void PlayerEntry()
+    {
+        var position = Transform.position;
+
+        position.y++;
+        if (position.y >= -120)
+        {
+            m_state = 2;
+            m_isDamage = true;
+        }
+        m_flash.Flash();
+
+        Transform.position = position;
+    }
+
+    /// <summary>
     /// 自機操作
     /// </summary>
     void PlayerControl()
     {
+        var position = Transform.position;
+
         var direction = Vector3.zero;
 
         // キーボード操作
@@ -111,24 +118,24 @@ public class Player : ObjectBase
             direction.y -= Speed;
         }
 
-        m_position += direction.normalized * Speed;
+        position += direction.normalized * Speed;
 
         // 画面内移動範囲
-        if (m_position.x <= -(GameInfo.Instance.ScreenBound.x - BoundSize.x))
+        if (position.x <= -(GameInfo.Instance.ScreenBound.x - BoundSize.x))
         {
-            m_position.x = -(GameInfo.Instance.ScreenBound.x - BoundSize.x);
+            position.x = -(GameInfo.Instance.ScreenBound.x - BoundSize.x);
         }
-        if (m_position.x >= (GameInfo.Instance.ScreenBound.x - BoundSize.x))
+        if (position.x >= (GameInfo.Instance.ScreenBound.x - BoundSize.x))
         {
-            m_position.x = (GameInfo.Instance.ScreenBound.x - BoundSize.x);
+            position.x = (GameInfo.Instance.ScreenBound.x - BoundSize.x);
         }
-        if (m_position.y <= -(GameInfo.Instance.ScreenBound.y - BoundSize.y))
+        if (position.y <= -(GameInfo.Instance.ScreenBound.y - BoundSize.y))
         {
-            m_position.y = -(GameInfo.Instance.ScreenBound.y - BoundSize.y);
+            position.y = -(GameInfo.Instance.ScreenBound.y - BoundSize.y);
         }
-        if (m_position.y >= (GameInfo.Instance.ScreenBound.y - BoundSize.y))
+        if (position.y >= (GameInfo.Instance.ScreenBound.y - BoundSize.y))
         {
-            m_position.y = (GameInfo.Instance.ScreenBound.y - BoundSize.y);
+            position.y = (GameInfo.Instance.ScreenBound.y - BoundSize.y);
         }
 
         // 弾発射
@@ -144,8 +151,10 @@ public class Player : ObjectBase
                 GenerateBullet();
             }
         }
+
+        Transform.position = position;
     }
-    
+
     /// <summary>
     /// デバッグ操作
     /// </summary>
@@ -176,7 +185,7 @@ public class Player : ObjectBase
         var prefab = Resources.Load<GameObject>("Prefabs/Bullet/Bullet");
         var bullet = Instantiate(prefab);
         bullet.GetComponent<Bullet>().Init(
-            new Vector3(m_position.x, m_position.y + 10),
+            new Vector3(Transform.position.x, Transform.position.y + 10),
             GameInfo.Instance.PowerUpCount);
 
         GameInfo.Instance.BulletCount++;
@@ -190,7 +199,7 @@ public class Player : ObjectBase
     {
         var prefab = Resources.Load<GameObject>("Prefabs/Item/Item");
         var item = Instantiate(prefab);
-        item.GetComponent<Item>().Init(new Vector3(m_position.x + Random.Range(-10, 10), m_position.y + 50));
+        item.GetComponent<Item>().Init(new Vector3(Transform.position.x + Random.Range(-10, 10), Transform.position.y + 50));
     }
 
     /// <summary>
@@ -200,7 +209,7 @@ public class Player : ObjectBase
     {
         var prefab = Resources.Load<GameObject>("Prefabs/Explosion/PlayerExplosion");
         var explosion = Instantiate(prefab);
-        explosion.GetComponent<Explosion>().Initialize(m_position);
+        explosion.GetComponent<Explosion>().Initialize(Transform.position);
     }
 
     /// <summary>

@@ -1,23 +1,29 @@
 ﻿using UnityEngine;
 
-public class Background : ObjectBase
+public class Background : MonoBehaviour
 {
+    private SpriteRenderer m_spriteRenderer = null;
+    private Transform m_transform = null;
+    private Vector3 m_move = Vector3.zero;
+
     public int Index { get; set; } = 0;
 
-    private Vector3 m_position;
-    public Vector3 Position { get => m_position; set => m_position = value; }
+    public Vector3 Position
+    {
+        get => m_transform.position;
+        set => m_transform.position = value;
+    }
     
     void Start()
     {
-        Initialize();
-
-        m_position = Vector3.zero;
+        m_spriteRenderer = GetComponent<SpriteRenderer>();
+        m_transform = transform;
+        m_transform.position = Vector3.zero;
     }
 
     void Update()
     {
-        m_position.y += Speed;
-        Transform.position = m_position;
+        m_transform.position += m_move;
     }
 
     /// <summary>
@@ -29,8 +35,8 @@ public class Background : ObjectBase
     public void Initialize(int index, Vector3 position, float speed)
     {
         Index = index;
-        m_position = position;
-        Speed = speed;
+        m_transform.position = position;
+        m_move = new Vector3(0.0f, speed, 0.0f);
     }
 
     /// <summary>
@@ -39,6 +45,6 @@ public class Background : ObjectBase
     /// <param name="sprite">Speite</param>
     public void SetBackgroundSprite(Sprite sprite)
     {
-        SpriteRenderer.sprite = sprite;
+        m_spriteRenderer.sprite = sprite;
     }
 }

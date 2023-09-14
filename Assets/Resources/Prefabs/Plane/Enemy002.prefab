@@ -100,9 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bea4fbf50d8fcf4a9db0b4158b81154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_speed: -0.25
+  m_speed: -0.5
   m_hp: 1
-  m_isAttack: 0
+  m_isAttack: 1
   m_flash: {fileID: 218113097119099784}
   m_countdown: {fileID: 1921116216511187658}
 --- !u!114 &218113097119099784

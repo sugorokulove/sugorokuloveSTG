@@ -2,7 +2,7 @@
 
 public class Item : ObjectBase
 {
-    private Vector3 m_position = Vector3.zero;      // アイテムの位置・座標
+    private Vector3 m_move = Vector3.zero;
 
     /// <summary>
     /// 初期化
@@ -12,7 +12,9 @@ public class Item : ObjectBase
     {
         Initialize();
 
-        m_position = position;
+        Transform.position = position;
+
+        m_move = new Vector3(0.0f, Speed, 0.0f);
     }
 
     /// <summary>
@@ -20,14 +22,12 @@ public class Item : ObjectBase
     /// </summary>
     void Update()
     {
-        m_position.y += Speed;
+        Transform.position += m_move;
 
-        if (transform.position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y))
+        if (Transform.position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y))
         {
             Remove();
         }
-
-        Transform.position = m_position;
     }
 
     /// <summary>

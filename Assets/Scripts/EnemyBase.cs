@@ -24,6 +24,20 @@ public abstract class EnemyBase : ObjectBase
     void Update()
     {
         Move();
+
+        // 画面外判定(出現位置の画面上部は判定なし)
+        if (Transform.position.x <= -(GameInfo.Instance.ScreenBound.x + BoundSize.x))
+        {
+            Destroy(gameObject);
+        }
+        if (Transform.position.x >= (GameInfo.Instance.ScreenBound.x + BoundSize.x))
+        {
+            Destroy(gameObject);
+        }
+        if (Transform.position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y))
+        {
+            Destroy(gameObject);
+        }
     }
 
     /// <summary>

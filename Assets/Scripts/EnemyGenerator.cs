@@ -45,7 +45,7 @@ public class EnemyGenerator : MonoBehaviour
         {
             if (GameInfo.Instance.Player != null)
             {
-                target = GameInfo.Instance.Player.Position;
+                target = GameInfo.Instance.Player.Transform.position;
             }
         }
 
@@ -55,7 +55,7 @@ public class EnemyGenerator : MonoBehaviour
             {
                 if (generator.TargetType == TargetType.Every)
                 {
-                    target = (GameInfo.Instance.Player != null) ? GameInfo.Instance.Player.Position : Vector3.zero;
+                    target = (GameInfo.Instance.Player != null) ? GameInfo.Instance.Player.Transform.position : Vector3.zero;
                 }
                 GenerateEnemy(generator.EnemyType, px[index], target);
                 distance += generator.Interval;
@@ -98,7 +98,7 @@ public class EnemyGenerator : MonoBehaviour
                 if (GameInfo.Instance.Player != null)
                 {
                     int point = 0;
-                    if (GameInfo.Instance.Player.Position.x >= 0)
+                    if (GameInfo.Instance.Player.Transform.position.x >= 0)
                     {
                         point = UnityEngine.Random.Range(-LocationArea, 0);
                     }

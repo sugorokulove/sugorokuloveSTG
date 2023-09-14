@@ -28,7 +28,6 @@ public class BackgroundManager : MonoBehaviour
                 // 最後
                 if (bg.Index == lastIndex - 1)
                 {
-                    bg.Speed = 0.0f;
                     bg.Position = new Vector3(0.0f, 0.0f, 0.0f);
                     continue;
                 }
@@ -39,7 +38,6 @@ public class BackgroundManager : MonoBehaviour
                 // 最後から2枚目
                 if (bg.Index == lastIndex - 2)
                 {
-                    bg.Speed = 0.0f;
                     bg.Position = new Vector3(0.0f, -size.y, 0.0f);
                 }
                 else

@@ -3,7 +3,8 @@ using UnityEngine;
 
 public enum EnemyType
 {
-    Enemy001 = 0,
+    None = 0,
+    Enemy001,
     Enemy002,
     Enemy003,
     Enemy004,
