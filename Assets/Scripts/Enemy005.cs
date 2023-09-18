@@ -19,17 +19,20 @@ public class Enemy005 : EnemyBase
 
         m_turn = false;
 
-        // 自機の位置により出現画面を自機と逆画面に設定する
-        // 速度も併せて調整する必要あり
-        if (GameInfo.Instance.Player.Transform.position.x >= 0.0f)
+        // 自機の位置により出現画面を自機と逆画面に設定する(速度も併せて要調整)
+        // Playerが生成されていない時に呼ばれる可能性あるためNULLチェックを行う
+        if (GameInfo.Instance.Player != null)
         {
-            m_x = -Math.Abs(m_x);
-            Speed = Mathf.Abs(Speed);
-        }
-        else
-        {
-            m_x = Math.Abs(m_x);
-            Speed = -Mathf.Abs(Speed);
+            if (GameInfo.Instance.Player.Transform.position.x >= 0.0f)
+            {
+                m_x = -Math.Abs(m_x);
+                Speed = Mathf.Abs(Speed);
+            }
+            else
+            {
+                m_x = Math.Abs(m_x);
+                Speed = -Mathf.Abs(Speed);
+            }
         }
 
         Transform.position = new Vector3(m_x, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
