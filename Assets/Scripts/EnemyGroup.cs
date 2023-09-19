@@ -19,7 +19,8 @@ public enum LocationType
 {
     None = 0,
     RandomPoint,
-    RandomHorizontal
+    RandomHorizontal,
+    Side
 }
 
 public enum TargetType

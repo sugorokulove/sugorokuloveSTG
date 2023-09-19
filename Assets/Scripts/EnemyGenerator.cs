@@ -114,6 +114,18 @@ public class EnemyGenerator : MonoBehaviour
                 positions = Enumerable.Range(-LocationArea, count).ToArray();   // 連続の値で埋める
                 positions = positions.OrderBy(_ => Guid.NewGuid()).ToArray();   // シャッフル
                 break;
+            // 画面端
+            case LocationType.Side:
+                if (GameInfo.Instance.Player != null)
+                {
+                    int point = LocationArea;
+                    if (GameInfo.Instance.Player.Transform.position.x >= 0)
+                    {
+                        point = -LocationArea;
+                    }
+                    positions = Enumerable.Repeat<int>(point, count).ToArray();
+                }
+                break;
         }
 
         return positions;
