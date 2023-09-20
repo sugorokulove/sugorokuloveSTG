@@ -8,6 +8,7 @@ public class GameInfo : SingletonMonoBehaviour<GameInfo>
     public const int BulletMax = 5;                             // 画面内弾生成制限数
     public const int PowerType = 3;                             // 自機の形状数
     public const int PowerMax = PowerType - 1;                  // パワーアップ回数
+    public const int LocationArea = 11;                         // ランダム範囲
 
     // SerializeField
     [SerializeField] private MainGame m_mainGame;               // MainGameのインスタンス
@@ -36,6 +37,11 @@ public class GameInfo : SingletonMonoBehaviour<GameInfo>
     {
         foreach(var stage in m_stages)
         {
+            foreach (var group in stage.EnemyGroup.Where(n => n.Count > LocationArea))
+            {
+                group.Count = LocationArea;
+            }
+
             Array.Sort(stage.Files.Select(n => n.name).ToArray(), stage.Files);
             Array.Sort(stage.EnemyGroup.Select(n => n.Distance).ToArray(), stage.EnemyGroup);
         }

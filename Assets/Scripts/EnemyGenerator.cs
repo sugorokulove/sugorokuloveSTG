@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
 {
-    private const int LocationArea = 5;     // ランダム範囲
-
     private int m_generatorIndex = 0;       // 監視している敵グループ
 
     void Awake()
@@ -34,11 +32,11 @@ public class EnemyGenerator : MonoBehaviour
     /// <returns></returns>
     IEnumerator GenerateGroup(EnemyGroup generator)
     {
-        int count = generator.Count;
-        float distance = generator.Distance - generator.Interval;   // 即時生成調整
-
-        var px = GeneratePosition(generator.LocationType, generator.Count);
         int index = 0;
+        int count = generator.Count;                                                // 生成数
+        float distance = generator.Distance - generator.Interval;                   // 即時生成調整
+        int[] entry = GeneratePosition(generator.LocationType, generator.Count);    // 出現位置
+        int[] middle = CreateMiddlePoint();                                         // 中継地点
 
         var target = Vector3.zero;
         if (generator.TargetType == TargetType.First)
@@ -53,11 +51,19 @@ public class EnemyGenerator : MonoBehaviour
         {
             if ((GameInfo.Instance.StageMove - distance) >= generator.Interval)
             {
+                // 毎回自機の位置をターゲットとする
                 if (generator.TargetType == TargetType.Every)
                 {
                     target = (GameInfo.Instance.Player != null) ? GameInfo.Instance.Player.Transform.position : Vector3.zero;
                 }
-                GenerateEnemy(generator.EnemyType, px[index], target);
+
+                // 中継地点をターゲットとする
+                if (generator.TargetType == TargetType.Middle)
+                {
+                    target = ConvertMiddlePoint(middle[index]);
+                }
+
+                GenerateEnemy(generator.EnemyType, entry[index], target);
                 distance += generator.Interval;
                 count--;
                 index++;
@@ -97,31 +103,34 @@ public class EnemyGenerator : MonoBehaviour
             case LocationType.RandomPoint:
                 if (GameInfo.Instance.Player != null)
                 {
-                    int point = 0;
+                    int point = GameInfo.LocationArea / 2;
                     if (GameInfo.Instance.Player.Transform.position.x >= 0)
                     {
-                        point = UnityEngine.Random.Range(-LocationArea, 0);
+                        point = UnityEngine.Random.Range(-point, 0);
                     }
                     else
                     {
-                        point = UnityEngine.Random.Range(0, LocationArea);
+                        point = UnityEngine.Random.Range(0, point);
                     }
                     positions = Enumerable.Repeat<int>(point, count).ToArray();
                 }
                 break;
             // 横一列のランダム
             case LocationType.RandomHorizontal:
-                positions = Enumerable.Range(-LocationArea, count).ToArray();   // 連続の値で埋める
-                positions = positions.OrderBy(_ => Guid.NewGuid()).ToArray();   // シャッフル
+                // 連続の値で埋めてシャッフル
+                positions = Enumerable.
+                    Range(-(GameInfo.LocationArea / 2), GameInfo.LocationArea).
+                    OrderBy(_ => Guid.NewGuid()).
+                    ToArray();
                 break;
             // 画面端
             case LocationType.Side:
                 if (GameInfo.Instance.Player != null)
                 {
-                    int point = LocationArea;
+                    int point = GameInfo.LocationArea / 2;
                     if (GameInfo.Instance.Player.Transform.position.x >= 0)
                     {
-                        point = -LocationArea;
+                        point = -point;
                     }
                     positions = Enumerable.Repeat<int>(point, count).ToArray();
                 }
@@ -129,5 +138,27 @@ public class EnemyGenerator : MonoBehaviour
         }
 
         return positions;
+    }
+
+    /// <summary>
+    /// 中継地点の作成
+    /// </summary>
+    /// <returns>中継地点配列</returns>
+    int[] CreateMiddlePoint()
+    {
+        return Enumerable.
+            Range(-(GameInfo.LocationArea / 2), GameInfo.LocationArea).
+            OrderBy(_ => Guid.NewGuid()).
+            ToArray();
+    }
+
+    /// <summary>
+    /// 中継地点をVector3型に変換
+    /// </summary>
+    /// <param name="point">横の位置</param>
+    /// <returns>Vector3型の位置</returns>
+    Vector3 ConvertMiddlePoint(int point)
+    {
+        return new Vector3(point * 40.0f, (point & 1) * 40.0f, 0.0f);
     }
 }

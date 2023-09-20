@@ -27,7 +27,8 @@ public enum TargetType
 {
     None = 0,
     First,
-    Every
+    Every,
+    Middle
 }
 
 [Serializable]
@@ -43,7 +44,7 @@ public class EnemyGroup
     public EnemyType EnemyType => m_enemyType;
     public LocationType LocationType => m_locationType;
     public TargetType TargetType => m_targetType;
-    public int Count => m_count;
+    public int Count { get => m_count; set => m_count = value; }
     public float Interval => m_interval;
     public float Distance => m_distance;
 }

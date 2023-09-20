@@ -197,24 +197,12 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 2422fccc84d350e43a663470dc5abcf5, type: 3}
     - {fileID: 21300000, guid: a164d4a5d62313949bb1a5a3af052982, type: 3}
     m_enemyGroup:
-    - m_enemyType: 8
-      m_locationType: 3
-      m_targetType: 0
-      m_count: 5
-      m_interval: 10
+    - m_enemyType: 9
+      m_locationType: 2
+      m_targetType: 3
+      m_count: 11
+      m_interval: 0
       m_distance: 50
-    - m_enemyType: 8
-      m_locationType: 3
-      m_targetType: 0
-      m_count: 5
-      m_interval: 10
-      m_distance: 150
-    - m_enemyType: 8
-      m_locationType: 3
-      m_targetType: 0
-      m_count: 5
-      m_interval: 10
-      m_distance: 250
   - m_files:
     - {fileID: 21300000, guid: 9c73bc4d39df1c04e9ebc7ff4a568c6a, type: 3}
     - {fileID: 21300000, guid: b8f624213418f71469f1ac6fe44d583e, type: 3}
@@ -228,12 +216,54 @@ MonoBehaviour:
     - {fileID: 21300000, guid: f8707a5c5bfa9164283f3bfbcdd26c7a, type: 3}
     - {fileID: 21300000, guid: d76ee23f4eca0a34ea0874628ad4aa17, type: 3}
     m_enemyGroup:
-    - m_enemyType: 0
+    - m_enemyType: 1
+      m_locationType: 0
+      m_targetType: 0
+      m_count: 5
+      m_interval: 5
+      m_distance: 50
+    - m_enemyType: 2
+      m_locationType: 2
+      m_targetType: 0
+      m_count: 11
+      m_interval: 10
+      m_distance: 150
+    - m_enemyType: 3
+      m_locationType: 1
+      m_targetType: 1
+      m_count: 5
+      m_interval: 5
+      m_distance: 250
+    - m_enemyType: 4
+      m_locationType: 2
+      m_targetType: 2
+      m_count: 11
+      m_interval: 10
+      m_distance: 350
+    - m_enemyType: 5
       m_locationType: 0
       m_targetType: 0
       m_count: 5
       m_interval: 10
-      m_distance: 50
+      m_distance: 450
+    - m_enemyType: 6
+      m_locationType: 2
+      m_targetType: 0
+      m_count: 11
+      m_interval: 10
+      m_distance: 550
+    - m_enemyType: 8
+      m_locationType: 3
+      m_targetType: 0
+      m_count: 5
+      m_interval: 10
+      m_distance: 650
+    - m_enemyType: 9
+      m_locationType: 2
+      m_targetType: 3
+      m_count: 11
+      m_interval: 0
+      m_distance: 750
   - m_files:
     - {fileID: 21300000, guid: 78f08fd37d5316a4b9c9f39d630dfdd3, type: 3}
     - {fileID: 21300000, guid: d9ff1c5685156234eaa3ffdec1510f13, type: 3}
