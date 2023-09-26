@@ -103,6 +103,7 @@ MonoBehaviour:
   m_speed: -0.5
   m_hp: 1
   m_isAttack: 1
+  m_snipe: 1
   m_flash: {fileID: 218113097119099784}
   m_countdown: {fileID: 1921116216511187658}
 --- !u!114 &218113097119099784

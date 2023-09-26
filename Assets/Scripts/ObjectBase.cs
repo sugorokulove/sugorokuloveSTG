@@ -40,4 +40,25 @@ public class ObjectBase : MonoBehaviour
             BoxCollider.size = SpriteRenderer.bounds.size;
         }
     }
+
+    /// <summary>
+    /// 画面外判定
+    /// </summary>
+    /// <returns>true:画面外／false:画面内</returns>
+    public bool JudgeOutOfScreenLeft()
+    {
+        return Transform.position.x <= -(GameInfo.Instance.ScreenBound.x + BoundSize.x);
+    }
+    public bool JudgeOutOfScreenRight()
+    {
+        return Transform.position.x >= (GameInfo.Instance.ScreenBound.x + BoundSize.x);
+    }
+    public bool JudgeOutOfScreenTop()
+    {
+        return Transform.position.y >= (GameInfo.Instance.ScreenBound.y + BoundSize.y);
+    }
+    public bool JudgeOutOfScreenBottom()
+    {
+        return Transform.position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y);
+    }
 }

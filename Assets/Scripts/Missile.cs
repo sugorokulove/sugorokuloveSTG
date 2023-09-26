@@ -8,13 +8,14 @@ public class Missile : ObjectBase
     /// 初期化
     /// </summary>
     /// <param name="position">初期位置・座標</param>
-    public void Init(Vector3 position)
+    public void Init(Vector3 position, Vector3 direction)
     {
         Initialize();
 
-        Transform.position = position;
+        m_move = direction * Speed;
 
-        m_move = new Vector3(0.0f, Speed, 0.0f);
+        Transform.position = position;
+        Transform.rotation = Quaternion.FromToRotation(Vector3.up, m_move);
     }
 
     /// <summary>
@@ -24,7 +25,10 @@ public class Missile : ObjectBase
     {
         Transform.position += m_move;
 
-        if (Transform.position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y))
+        if (JudgeOutOfScreenLeft() ||
+            JudgeOutOfScreenRight() ||
+            JudgeOutOfScreenTop() ||
+            JudgeOutOfScreenBottom())
         {
             Destroy(gameObject);
         }

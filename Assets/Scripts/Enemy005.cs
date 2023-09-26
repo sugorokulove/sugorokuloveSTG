@@ -52,21 +52,13 @@ public class Enemy005 : EnemyBase
 
         Transform.position = position;
 
-        if (m_turn)
-        {
-            // 反転後、画面上部の画面外判定を行う
-            if (Transform.position.y >= (GameInfo.Instance.ScreenBound.y + BoundSize.y))
-            {
-                Destroy(gameObject);
-            }
-        }
-        else
+        if (!m_turn)
         {
             // 反転の判定
             if (((Speed >= 0) && (position.x >= 0)) || ((Speed < 0) && (position.x <= 0)))
             {
                 m_turn = true;
-                Transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                Transform.rotation = Quaternion.identity;
             }
         }
     }

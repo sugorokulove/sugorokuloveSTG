@@ -4,14 +4,19 @@ public abstract class EnemyBase : ObjectBase
 {
     [SerializeField] int m_hp;                              // HP
     [SerializeField] bool m_isAttack;                       // 攻撃の有無
+    [SerializeField] bool m_snipe;                          // 狙撃弾にするか？
     [SerializeField] SpriteFlash m_flash;                   // 白点滅用
     [SerializeField] private Countdown m_countdown;         // 攻撃用カウントダウン
 
     public abstract void Init(float px, Vector3 target);    // 初期化
     public abstract void Move();                            // 移動
 
+    private bool m_judgeScreen = false;                     // 画面内外判定用
+
     void Start()
     {
+        m_judgeScreen = false;
+
         if (m_isAttack)
         {
             m_countdown.Initialize(() => GenerateMissile());
@@ -25,16 +30,36 @@ public abstract class EnemyBase : ObjectBase
     {
         Move();
 
-        // 画面外判定(出現位置の画面上部は判定なし)
-        if (Transform.position.x <= -(GameInfo.Instance.ScreenBound.x + BoundSize.x))
+        // 画面内外判定
+        if (!m_judgeScreen)
         {
-            Destroy(gameObject);
+            JudgeInScreen();
         }
-        if (Transform.position.x >= (GameInfo.Instance.ScreenBound.x + BoundSize.x))
+        else
         {
-            Destroy(gameObject);
+            JudgeOutScreen();
         }
-        if (Transform.position.y <= -(GameInfo.Instance.ScreenBound.y + BoundSize.y))
+    }
+
+    // 画面内判定
+    private void JudgeInScreen()
+    {
+        if (Transform.position.x >= -(GameInfo.Instance.ScreenBound.x + BoundSize.x) &&
+            Transform.position.x <= (GameInfo.Instance.ScreenBound.x + BoundSize.x) &&
+            Transform.position.y >= -(GameInfo.Instance.ScreenBound.y + BoundSize.y) &&
+            Transform.position.y <= (GameInfo.Instance.ScreenBound.y + BoundSize.y))
+        {
+            m_judgeScreen = true;
+        }
+    }
+
+    // 画面外判定
+    private void JudgeOutScreen()
+    {
+        if (JudgeOutOfScreenLeft() ||
+            JudgeOutOfScreenRight() ||
+            JudgeOutOfScreenTop() ||
+            JudgeOutOfScreenBottom())
         {
             Destroy(gameObject);
         }
@@ -63,7 +88,7 @@ public abstract class EnemyBase : ObjectBase
     {
         var prefab = Resources.Load<GameObject>("Prefabs/Explosion/EnemyExplosion");
         var explosion = Instantiate(prefab);
-        explosion.GetComponent<Explosion>().Initialize(transform.position);
+        explosion.GetComponent<Explosion>().Initialize(Transform.position);
     }
 
     /// <summary>
@@ -71,8 +96,18 @@ public abstract class EnemyBase : ObjectBase
     /// </summary>
     public void GenerateMissile()
     {
+        var move = Transform.up;
+
+        if (m_snipe)
+        {
+            if (GameInfo.Instance.Player != null)
+            {
+                move = (GameInfo.Instance.Player.Transform.position - Transform.position).normalized;
+            }
+        }
+
         var prefab = Resources.Load<GameObject>("Prefabs/Missile/Missile");
         var missile = Instantiate(prefab);
-        missile.GetComponent<Missile>().Init(transform.position);
+        missile.GetComponent<Missile>().Init(Transform.position, move);
     }
 }

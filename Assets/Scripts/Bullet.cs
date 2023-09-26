@@ -35,7 +35,7 @@ public class Bullet : ObjectBase
     {
         Transform.position += m_move;
 
-        if (Transform.position.y >= (GameInfo.Instance.ScreenBound.y + BoundSize.y))
+        if (JudgeOutOfScreenTop())
         {
             Remove();
         }

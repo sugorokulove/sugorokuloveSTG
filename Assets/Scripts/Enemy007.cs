@@ -42,6 +42,8 @@ public class Enemy007 : EnemyBase
     /// </summary>
     private void HomingMove()
     {
+        if (GameInfo.Instance.Player == null) return;
+
         var direction = GameInfo.Instance.Player.Transform.position - Transform.position;   // 方向(ベクトル)
         var currentAngle = Mathf.Atan2(m_move.y, m_move.x) * Mathf.Rad2Deg;                 // 現在の角度
         var targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;            // ターゲットへの角度
@@ -69,9 +71,8 @@ public class Enemy007 : EnemyBase
         }
 
         // 角度をベクトルに変換
-        m_move = new Vector3(Mathf.Cos(nextAngle * Mathf.PI / 180.0f),
-                             Mathf.Sin(nextAngle * Mathf.PI / 180.0f),
-                             0.0f).normalized * Speed;
+        var radian = nextAngle * Mathf.Deg2Rad;
+        m_move = new Vector3(Mathf.Cos(radian), Mathf.Sin(radian), 0.0f).normalized * Speed;
 
         // 画像の向きを変更
         Transform.rotation = Quaternion.FromToRotation(Vector3.up, m_move);
