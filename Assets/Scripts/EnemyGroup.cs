@@ -40,6 +40,7 @@ public class EnemyGroup
     [SerializeField] int m_count;                   // 個数
     [SerializeField] float m_interval;              // 間隔
     [SerializeField] float m_distance;              // 距離
+    [SerializeField] bool m_isItem;                 // アイテムの生成の有無
 
     public EnemyType EnemyType => m_enemyType;
     public LocationType LocationType => m_locationType;
@@ -47,4 +48,7 @@ public class EnemyGroup
     public int Count { get => m_count; set => m_count = value; }
     public float Interval => m_interval;
     public float Distance => m_distance;
+    public bool IsItem => m_isItem;
+
+    public int ItemCount { get; set; }              // 撃破数カウント用
 }

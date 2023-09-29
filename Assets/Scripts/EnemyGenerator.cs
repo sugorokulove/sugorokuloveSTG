@@ -28,18 +28,18 @@ public class EnemyGenerator : MonoBehaviour
     /// <summary>
     /// 敵グループ生成(非同期)
     /// </summary>
-    /// <param name="generator">グループ情報</param>
+    /// <param name="group">グループ情報</param>
     /// <returns></returns>
-    IEnumerator GenerateGroup(EnemyGroup generator)
+    IEnumerator GenerateGroup(EnemyGroup group)
     {
         int index = 0;
-        int count = generator.Count;                                                // 生成数
-        float distance = generator.Distance - generator.Interval;                   // 即時生成調整
-        int[] entry = GeneratePosition(generator.LocationType, generator.Count);    // 出現位置
-        int[] middle = CreateMiddlePoint();                                         // 中継地点
+        int count = group.Count;                                            // 生成数
+        float distance = group.Distance - group.Interval;                   // 即時生成調整
+        int[] entry = GeneratePosition(group.LocationType, group.Count);    // 出現位置
+        int[] middle = CreateMiddlePoint();                                 // 中継地点
 
         var target = Vector3.zero;
-        if (generator.TargetType == TargetType.First)
+        if (group.TargetType == TargetType.First)
         {
             if (GameInfo.Instance.Player != null)
             {
@@ -49,22 +49,22 @@ public class EnemyGenerator : MonoBehaviour
 
         while (count > 0)
         {
-            if ((GameInfo.Instance.StageMove - distance) >= generator.Interval)
+            if ((GameInfo.Instance.StageMove - distance) >= group.Interval)
             {
                 // 毎回自機の位置をターゲットとする
-                if (generator.TargetType == TargetType.Every)
+                if (group.TargetType == TargetType.Every)
                 {
                     target = (GameInfo.Instance.Player != null) ? GameInfo.Instance.Player.Transform.position : Vector3.zero;
                 }
 
                 // 中継地点をターゲットとする
-                if (generator.TargetType == TargetType.Middle)
+                if (group.TargetType == TargetType.Middle)
                 {
                     target = ConvertMiddlePoint(middle[index]);
                 }
 
-                GenerateEnemy(generator.EnemyType, entry[index], target);
-                distance += generator.Interval;
+                GenerateEnemy(group, entry[index], target);
+                distance += group.Interval;
                 count--;
                 index++;
             }
@@ -75,12 +75,13 @@ public class EnemyGenerator : MonoBehaviour
     /// <summary>
     /// 敵の生成
     /// </summary>
-    void GenerateEnemy(EnemyType type, int px, Vector3 target)
+    void GenerateEnemy(EnemyGroup group, int px, Vector3 target)
     {
-        var prefab = Resources.Load<GameObject>($"Prefabs/Plane/{type.ToString()}");
+        var prefab = Resources.Load<GameObject>($"Prefabs/Plane/{group.EnemyType.ToString()}");
         var gameobject = UnityEngine.GameObject.Instantiate(prefab);
         var enemy = gameobject.GetComponent<EnemyBase>();
         enemy.Init(px * 40.0f, target);
+        enemy.MemberGroup = group;
     }
 
     /// <summary>

@@ -37,9 +37,13 @@ public class GameInfo : SingletonMonoBehaviour<GameInfo>
     {
         foreach(var stage in m_stages)
         {
-            foreach (var group in stage.EnemyGroup.Where(n => n.Count > LocationArea))
+            foreach (var group in stage.EnemyGroup)
             {
-                group.Count = LocationArea;
+                if (group.Count > LocationArea)
+                {
+                    group.Count = LocationArea;
+                }
+                group.ItemCount = group.Count;
             }
 
             Array.Sort(stage.Files.Select(n => n.name).ToArray(), stage.Files);

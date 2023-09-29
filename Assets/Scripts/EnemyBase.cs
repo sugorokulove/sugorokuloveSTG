@@ -11,6 +11,8 @@ public abstract class EnemyBase : ObjectBase
     public abstract void Init(float px, Vector3 target);    // 初期化
     public abstract void Move();                            // 移動
 
+    public EnemyGroup MemberGroup { get; set; }             // 所属しているグループ
+
     private bool m_judgeScreen = false;                     // 画面内外判定用
 
     void Start()
@@ -76,9 +78,35 @@ public abstract class EnemyBase : ObjectBase
         m_hp -= power;
         if (m_hp <= 0)
         {
+            ItemGenerateCheck();
             GenerateExplosion();
             Destroy(gameObject);
         }
+    }
+
+    /// <summary>
+    /// アイテム生成チェック
+    /// </summary>
+    void ItemGenerateCheck()
+    {
+        if (MemberGroup.IsItem)
+        {
+            MemberGroup.ItemCount--;
+            if (MemberGroup.ItemCount <= 0)
+            {
+                GenerateItem();
+            }
+        }
+    }
+
+    /// <summary>
+    /// アイテム生成
+    /// </summary>
+    void GenerateItem()
+    {
+        var prefab = Resources.Load<GameObject>("Prefabs/Item/Item");
+        var item = Instantiate(prefab);
+        item.GetComponent<Item>().Init(new Vector3(Transform.position.x, Transform.position.y));
     }
 
     /// <summary>
