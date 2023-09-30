@@ -2,6 +2,7 @@
 
 public class Item : ObjectBase
 {
+    [SerializeField] private int m_score;
     private Vector3 m_move = Vector3.zero;
 
     /// <summary>
@@ -35,6 +36,7 @@ public class Item : ObjectBase
     /// </summary>
     public void Remove()
     {
+        GameInfo.Instance.UpdateScore(m_score);
         Destroy(gameObject);
     }
 }

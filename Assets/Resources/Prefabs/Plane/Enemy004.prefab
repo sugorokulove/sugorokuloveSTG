@@ -102,7 +102,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_speed: 0.75
   m_hp: 1
+  m_score: 100
   m_isAttack: 0
+  m_snipe: 0
   m_flash: {fileID: 2220928241249517193}
   m_countdown: {fileID: 6907399649678179769}
 --- !u!114 &2220928241249517193

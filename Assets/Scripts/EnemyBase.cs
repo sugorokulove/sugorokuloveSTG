@@ -3,6 +3,7 @@
 public abstract class EnemyBase : ObjectBase
 {
     [SerializeField] int m_hp;                              // HP
+    [SerializeField] int m_score;                           // スコア
     [SerializeField] bool m_isAttack;                       // 攻撃の有無
     [SerializeField] bool m_snipe;                          // 狙撃弾にするか？
     [SerializeField] SpriteFlash m_flash;                   // 白点滅用
@@ -78,6 +79,7 @@ public abstract class EnemyBase : ObjectBase
         m_hp -= power;
         if (m_hp <= 0)
         {
+            GameInfo.Instance.UpdateScore(m_score);
             ItemGenerateCheck();
             GenerateExplosion();
             Destroy(gameObject);
