@@ -12,7 +12,8 @@ public enum EnemyType
     Enemy006,
     Enemy007,
     Enemy008,
-    Enemy009
+    Enemy009,
+    Boss
 }
 
 public enum LocationType

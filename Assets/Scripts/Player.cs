@@ -69,7 +69,12 @@ public class Player : ObjectBase
         if (collision.TryGetComponent<EnemyBase>(out var enemy))
         {
             Damage(100);
-            enemy.Damage(100);
+
+            // ボスは除外
+            if (!(enemy is Boss))
+            {
+                enemy.Damage(100);
+            }
         }
     }
 

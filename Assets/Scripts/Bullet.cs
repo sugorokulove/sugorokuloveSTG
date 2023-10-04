@@ -50,8 +50,12 @@ public class Bullet : ObjectBase
         // 敵
         if (collision.TryGetComponent<EnemyBase>(out var enemy))
         {
-            enemy.Damage(m_power);
-            Remove();
+            // ボスは除外
+            if (!(enemy is Boss))
+            {
+                enemy.Damage(m_power);
+                Remove();
+            }
         }
     }
 
