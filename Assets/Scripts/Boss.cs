@@ -15,6 +15,8 @@ public class Boss : EnemyBase
             new (-1.0f, 0.0f, 0.0f)         // 07 : 左
     };
 
+    [SerializeField] private Cannon[] m_cannons;
+
     private int m_state = 0;                        // 動作管理
     private Vector3 m_move = Vector3.zero;          // 移動量
 
@@ -42,6 +44,11 @@ public class Boss : EnemyBase
             case 1:     // 登場
                 if (Transform.position.y <= 40.0f)
                 {
+                    foreach (var cannon in m_cannons)
+                    {
+                        cannon.State = Cannon.StateType.SelectAction;
+                    }
+
                     Speed = 0.5f;
                     CreateDirection(0.0f, 40.0f);
                 }

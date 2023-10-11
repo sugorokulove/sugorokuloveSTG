@@ -1,21 +1,19 @@
 ﻿using UnityEngine;
 
-public class Missile : ObjectBase
+public class Laser : ObjectBase
 {
-    private Vector3 m_move = Vector3.zero;
+    public int CannonIndex { get; set; } = 0;
 
     /// <summary>
     /// 初期化
     /// </summary>
     /// <param name="position">初期位置・座標</param>
-    public void Init(Vector3 position, Vector3 direction)
+    public void Init(Vector3 position)
     {
         Initialize();
 
-        m_move = direction * Speed;
-
-        Transform.position = position;
-        Transform.rotation = Quaternion.FromToRotation(Vector3.up, m_move);
+        Transform.position = new Vector3(position.x, position.y + BoundSize.y, 0.0f);
+        Transform.rotation = Quaternion.FromToRotation(Vector3.up, Vector3.down);
     }
 
     /// <summary>
@@ -23,12 +21,14 @@ public class Missile : ObjectBase
     /// </summary>
     void Update()
     {
-        Transform.position += m_move;
+        var position = Transform.position;
 
-        if (JudgeOutOfScreenLeft() ||
-            JudgeOutOfScreenRight() ||
-            JudgeOutOfScreenTop() ||
-            JudgeOutOfScreenBottom())
+        position.x = Cannon.CannonPosition[CannonIndex].x;
+        position.y += Speed;
+
+        Transform.position = position;
+
+        if (JudgeOutOfScreenBottom())
         {
             Destroy(gameObject);
         }
@@ -43,8 +43,7 @@ public class Missile : ObjectBase
         // 自機
         if (collision.TryGetComponent<Player>(out var player))
         {
-            player.Damage(1);
-            Destroy(gameObject);
+            player.Damage(100);
         }
     }
 }
