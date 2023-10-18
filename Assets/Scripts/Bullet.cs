@@ -57,6 +57,13 @@ public class Bullet : ObjectBase
                 Remove();
             }
         }
+
+        // ボスコア
+        if (collision.TryGetComponent<Core>(out var core))
+        {
+            core.Damage(m_power);
+            Remove();
+        }
     }
 
     /// <summary>

@@ -47,6 +47,7 @@ public class Boss : EnemyBase
                     foreach (var cannon in m_cannons)
                     {
                         cannon.State = Cannon.StateType.SelectAction;
+                        cannon.Core.SetImageFromHP();
                     }
 
                     Speed = 0.5f;

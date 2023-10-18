@@ -49,7 +49,11 @@ public class MainGame : MonoBehaviour
     /// </summary>
     private void AddStock()
     {
-        m_stockList[GetStock] = GenerateStock();
+        var position = new Vector3(
+            -GameInfo.Instance.ScreenBound.x + GetStock * 16 + 16,
+            -GameInfo.Instance.ScreenBound.y + 16);
+
+        m_stockList[GetStock] = ResourceGenerator.GenerateStock(position);
     }
 
     /// <summary>
@@ -66,10 +70,7 @@ public class MainGame : MonoBehaviour
     /// </summary>
     void GeneratePlayer()
     {
-        var prefab = Resources.Load<GameObject>("Prefabs/Plane/Player");
-        var gameobject = Instantiate(prefab);
-        var player = gameobject.GetComponent<Player>();
-        player.Init();
+        var player = ResourceGenerator.GeneratePlayer();
 
         GameInfo.Instance.Player = player;
 
@@ -77,28 +78,11 @@ public class MainGame : MonoBehaviour
     }
 
     /// <summary>
-    /// 残機の生成
-    /// </summary>
-    GameObject GenerateStock()
-    {
-        var prefab = Resources.Load<GameObject>("Prefabs/UI/Stock");
-        var stock = Instantiate(prefab);
-        stock.transform.position = new Vector3(
-            -GameInfo.Instance.ScreenBound.x + GetStock * 16 + 16,
-            -GameInfo.Instance.ScreenBound.y + 16);
-        return stock;
-    }
-
-    /// <summary>
     /// ゲームオーバー生成
     /// </summary>
     void GenerateGameover()
     {
-        var prefab = Resources.Load<GameObject>("Prefabs/UI/Gameover");
-        Instantiate(prefab);
-
-        prefab = Resources.Load<GameObject>("Prefabs/UI/Veil");
-        Instantiate(prefab);
+        ResourceGenerator.GenerateGameover();
 
         StartCoroutine(TransitionToTitle(3.0f));
     }

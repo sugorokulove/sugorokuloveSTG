@@ -16,12 +16,14 @@ public class Cannon : ObjectBase
 
     [SerializeField] private int m_cannonIndex;
     [SerializeField] private Transform m_shotPoint;
+    [SerializeField] private Core m_core;
 
     private StateType m_state = StateType.None;
     private int m_timer = 0;
     private int m_count = 0;
 
     public StateType State { get => m_state; set => m_state = value; }
+    public Core Core => m_core;
 
     void Start()
     {
@@ -87,7 +89,9 @@ public class Cannon : ObjectBase
                 move = (GameInfo.Instance.Player.Transform.position - Transform.position).normalized;
             }
 
-            GenerateMissile(move);
+            Transform.rotation = Quaternion.FromToRotation(Vector3.up, move);
+            
+            ResourceGenerator.GenerateMissile(m_shotPoint.position, move);
 
             m_count++;
             if (m_count >= 5)
@@ -109,7 +113,7 @@ public class Cannon : ObjectBase
             var radian = angle * Mathf.Deg2Rad;
             var move = new Vector3(Mathf.Cos(radian), Mathf.Sin(radian), 0.0f).normalized;
 
-            GenerateMissile(move);
+            ResourceGenerator.GenerateMissile(m_shotPoint.position, move);
 
             angle += 20;
         }
@@ -128,7 +132,7 @@ public class Cannon : ObjectBase
         {
             m_timer = 6;
 
-            GenerateLaser();
+            ResourceGenerator.GenerateLaser(m_shotPoint.position, m_cannonIndex);
 
             m_count++;
             if (m_count >= 30)
@@ -138,30 +142,6 @@ public class Cannon : ObjectBase
         }
 
         CannonPosition[m_cannonIndex] = m_shotPoint.position;
-    }
-
-    /// <summary>
-    /// ミサイルの生成
-    /// </summary>
-    /// <param name="move"></param>
-    private void GenerateMissile(Vector3 move)
-    {
-        Transform.rotation = Quaternion.FromToRotation(Vector3.up, move);
-        var prefab = Resources.Load<GameObject>("Prefabs/Missile/Missile");
-        var missile = Instantiate(prefab);
-        missile.GetComponent<Missile>().Init(m_shotPoint.position, move);
-    }
-
-    /// <summary>
-    /// レーザーの生成
-    /// </summary>
-    /// <param name="move"></param>
-    private void GenerateLaser()
-    {
-        var prefab = Resources.Load<GameObject>("Prefabs/Missile/Laser");
-        var laser = Instantiate(prefab).GetComponent<Laser>();
-        laser.Init(m_shotPoint.position);
-        laser.CannonIndex = m_cannonIndex;
     }
 
     /// <summary>

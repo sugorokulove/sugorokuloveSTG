@@ -153,7 +153,8 @@ public class Player : ObjectBase
             {
                 m_shootWait = ShootWaitTime;
 
-                GenerateBullet();
+                ResourceGenerator.GenerateBullet(
+                    new Vector3(Transform.position.x, Transform.position.y + 10));
             }
         }
 
@@ -168,7 +169,8 @@ public class Player : ObjectBase
         // アイテム生成
         if (Input.GetKeyDown(KeyCode.I))
         {
-            GenerateItem();
+            ResourceGenerator.GenerateItem(
+                new Vector3(Transform.position.x + Random.Range(-10, 10), Transform.position.y + 50));
         }
 
         // パワーアップ
@@ -180,41 +182,6 @@ public class Player : ObjectBase
         {
             PowerDown(1);
         }
-    }
-
-    /// <summary>
-    /// 弾生成
-    /// </summary>
-    void GenerateBullet()
-    {
-        var prefab = Resources.Load<GameObject>("Prefabs/Bullet/Bullet");
-        var bullet = Instantiate(prefab);
-        bullet.GetComponent<Bullet>().Init(
-            new Vector3(Transform.position.x, Transform.position.y + 10),
-            GameInfo.Instance.PowerUpCount);
-
-        GameInfo.Instance.BulletCount++;
-        GameInfo.Instance.BulletCount = Mathf.Min(GameInfo.Instance.BulletCount, GameInfo.BulletMax);
-    }
-    
-    /// <summary>
-    /// アイテム生成
-    /// </summary>
-    void GenerateItem()
-    {
-        var prefab = Resources.Load<GameObject>("Prefabs/Item/Item");
-        var item = Instantiate(prefab);
-        item.GetComponent<Item>().Init(new Vector3(Transform.position.x + Random.Range(-10, 10), Transform.position.y + 50));
-    }
-
-    /// <summary>
-    /// 爆発の生成
-    /// </summary>
-    void GenerateExplosion()
-    {
-        var prefab = Resources.Load<GameObject>("Prefabs/Explosion/PlayerExplosion");
-        var explosion = Instantiate(prefab);
-        explosion.GetComponent<Explosion>().Initialize(Transform.position);
     }
 
     /// <summary>
@@ -260,7 +227,8 @@ public class Player : ObjectBase
         if (PowerDown(power))
         {
             m_state = 3;
-            GenerateExplosion();
+            m_isDamage = false;
+            ResourceGenerator.GeneratePlayerExplosion(Transform.position);
             GameInfo.Instance.MainGame.ReStart();
             Destroy(gameObject);
         }

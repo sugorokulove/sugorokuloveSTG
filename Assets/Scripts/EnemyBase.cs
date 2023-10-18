@@ -81,7 +81,7 @@ public abstract class EnemyBase : ObjectBase
         {
             GameInfo.Instance.UpdateScore(m_score);
             ItemGenerateCheck();
-            GenerateExplosion();
+            ResourceGenerator.GenerateEnemyExplosion(Transform.position);
             Destroy(gameObject);
         }
     }
@@ -96,29 +96,9 @@ public abstract class EnemyBase : ObjectBase
             MemberGroup.ItemCount--;
             if (MemberGroup.ItemCount <= 0)
             {
-                GenerateItem();
+                ResourceGenerator.GenerateItem(Transform.position);
             }
         }
-    }
-
-    /// <summary>
-    /// アイテム生成
-    /// </summary>
-    void GenerateItem()
-    {
-        var prefab = Resources.Load<GameObject>("Prefabs/Item/Item");
-        var item = Instantiate(prefab);
-        item.GetComponent<Item>().Init(new Vector3(Transform.position.x, Transform.position.y));
-    }
-
-    /// <summary>
-    /// 爆発の生成
-    /// </summary>
-    void GenerateExplosion()
-    {
-        var prefab = Resources.Load<GameObject>("Prefabs/Explosion/EnemyExplosion");
-        var explosion = Instantiate(prefab);
-        explosion.GetComponent<Explosion>().Initialize(Transform.position);
     }
 
     /// <summary>
@@ -136,8 +116,6 @@ public abstract class EnemyBase : ObjectBase
             }
         }
 
-        var prefab = Resources.Load<GameObject>("Prefabs/Missile/Missile");
-        var missile = Instantiate(prefab);
-        missile.GetComponent<Missile>().Init(Transform.position, move);
+        ResourceGenerator.GenerateMissile(Transform.position, move);
     }
 }

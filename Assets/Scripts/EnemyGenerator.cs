@@ -63,25 +63,14 @@ public class EnemyGenerator : MonoBehaviour
                     target = ConvertMiddlePoint(middle[index]);
                 }
 
-                GenerateEnemy(group, entry[index], target);
+                ResourceGenerator.GenerateEnemy(group, entry[index], target);
+
                 distance += group.Interval;
                 count--;
                 index++;
             }
             yield return null;
         }
-    }
-
-    /// <summary>
-    /// 敵の生成
-    /// </summary>
-    void GenerateEnemy(EnemyGroup group, int px, Vector3 target)
-    {
-        var prefab = Resources.Load<GameObject>($"Prefabs/Plane/{group.EnemyType.ToString()}");
-        var gameobject = UnityEngine.GameObject.Instantiate(prefab);
-        var enemy = gameobject.GetComponent<EnemyBase>();
-        enemy.Init(px * 40.0f, target);
-        enemy.MemberGroup = group;
     }
 
     /// <summary>
