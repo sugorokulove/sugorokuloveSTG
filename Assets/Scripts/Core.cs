@@ -13,10 +13,14 @@ public class Core : ObjectBase
     [SerializeField] private int m_hp;              // HP現在値
     [SerializeField] private int m_score;           // スコア
     [SerializeField] private SpriteFlash m_flash;   // 点滅用
+    [SerializeField] private Boss m_boss;           // ボス
+    [SerializeField] private Cannon m_cannon;       // 砲台
     [SerializeField] private Sprite[] m_costumes;   // 色変化
 
     private State m_state;                          // 色
     private int m_hpMax;                            // HP最大値
+
+    public int Hp => m_hp;
 
     void Start()
     {
@@ -39,6 +43,9 @@ public class Core : ObjectBase
             m_hp -= power;
             if (m_hp <= 0)
             {
+                m_hp = 0;
+                m_boss.IsDestroyed();
+                m_cannon.State = Cannon.StateType.Stop;
                 GameInfo.Instance.UpdateScore(m_score);
                 ResourceGenerator.GenerateEnemyExplosion(Transform.position);
                 Destroy(gameObject);

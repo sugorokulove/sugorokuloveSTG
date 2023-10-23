@@ -14,6 +14,8 @@ public class Player : ObjectBase
     private int m_shootWait = 0;                        // 弾の間隔用
     private float m_speedMin, m_speedMax;               // 自機の速度の最小値/最大値
 
+    public bool IsDamage { get => m_isDamage; set => m_isDamage = value; }
+
     /// <summary>
     /// 初期化
     /// </summary>
