@@ -46,7 +46,7 @@ public class Core : ObjectBase
                 m_hp = 0;
                 m_boss.IsDestroyed();
                 m_cannon.State = Cannon.StateType.Stop;
-                GameInfo.Instance.UpdateScore(m_score);
+                UIManager.Instance.UpdateScore(m_score);
                 ResourceGenerator.GenerateEnemyExplosion(Transform.position);
                 Destroy(gameObject);
             }

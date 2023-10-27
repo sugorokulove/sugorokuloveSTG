@@ -8,12 +8,7 @@ public class BackgroundManager : MonoBehaviour
 
     void Start()
     {
-        // Backgroundの初期設定
-        for (int i = 0; i < m_background.Length; i++)
-        {
-            m_background[i].Initialize(i, new Vector3(0.0f, i * 360.0f, 0.0f), m_speed);
-            m_background[i].SetBackgroundSprite(GetStageSprite(m_background[i].Index));
-        }
+        Initialize();
     }
 
     void Update()
@@ -50,6 +45,18 @@ public class BackgroundManager : MonoBehaviour
         }
 
         GameInfo.Instance.StageMove += Math.Abs(m_speed);
+    }
+
+    /// <summary>
+    /// Backgroundの初期設定
+    /// </summary>
+    public void Initialize()
+    {
+        for (int i = 0; i < m_background.Length; i++)
+        {
+            m_background[i].Initialize(i, new Vector3(0.0f, i * 360.0f, 0.0f), m_speed);
+            m_background[i].SetBackgroundSprite(GetStageSprite(m_background[i].Index));
+        }
     }
 
     /// <summary>

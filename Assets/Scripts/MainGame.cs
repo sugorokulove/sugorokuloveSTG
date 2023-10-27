@@ -91,7 +91,7 @@ public class MainGame : MonoBehaviour
     /// シーン遷移(指定秒後)
     /// </summary>
     /// <param name="second">秒数</param>
-    IEnumerator TransitionToTitle(float second)
+    public IEnumerator TransitionToTitle(float second)
     {
         yield return new WaitForSeconds(second);
 

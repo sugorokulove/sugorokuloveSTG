@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 347021459}
   - component: {fileID: 347021461}
   - component: {fileID: 347021462}
+  - component: {fileID: 347021463}
   m_Layer: 0
   m_Name: Main Game
   m_TagString: Untagged
@@ -260,8 +261,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_mainGame: {fileID: 347021459}
+  m_bgManager: {fileID: 1548175763}
+  m_enemyGenerator: {fileID: 347021462}
   m_stock: 5
-  m_uiScore: {fileID: 545718870}
   m_stages:
   - m_files:
     - {fileID: 21300000, guid: 22d698e9910d95e40b19488ae3e8cec2, type: 3}
@@ -296,68 +298,12 @@ MonoBehaviour:
     - {fileID: 21300000, guid: f8707a5c5bfa9164283f3bfbcdd26c7a, type: 3}
     - {fileID: 21300000, guid: d76ee23f4eca0a34ea0874628ad4aa17, type: 3}
     m_enemyGroup:
-    - m_enemyType: 1
+    - m_enemyType: 10
       m_locationType: 0
       m_targetType: 0
-      m_count: 5
-      m_interval: 5
-      m_distance: 50
-      m_isItem: 0
-    - m_enemyType: 2
-      m_locationType: 2
-      m_targetType: 0
-      m_count: 11
-      m_interval: 10
-      m_distance: 150
-      m_isItem: 0
-    - m_enemyType: 3
-      m_locationType: 1
-      m_targetType: 1
-      m_count: 5
-      m_interval: 5
-      m_distance: 250
-      m_isItem: 0
-    - m_enemyType: 4
-      m_locationType: 2
-      m_targetType: 2
-      m_count: 11
-      m_interval: 10
-      m_distance: 350
-      m_isItem: 0
-    - m_enemyType: 5
-      m_locationType: 0
-      m_targetType: 0
-      m_count: 5
-      m_interval: 10
-      m_distance: 450
-      m_isItem: 0
-    - m_enemyType: 6
-      m_locationType: 2
-      m_targetType: 0
-      m_count: 11
-      m_interval: 10
-      m_distance: 550
-      m_isItem: 0
-    - m_enemyType: 7
-      m_locationType: 2
-      m_targetType: 0
-      m_count: 3
-      m_interval: 100
-      m_distance: 650
-      m_isItem: 0
-    - m_enemyType: 8
-      m_locationType: 3
-      m_targetType: 0
-      m_count: 5
-      m_interval: 10
-      m_distance: 750
-      m_isItem: 0
-    - m_enemyType: 9
-      m_locationType: 2
-      m_targetType: 3
-      m_count: 11
+      m_count: 1
       m_interval: 0
-      m_distance: 850
+      m_distance: 50
       m_isItem: 0
   - m_files:
     - {fileID: 21300000, guid: 78f08fd37d5316a4b9c9f39d630dfdd3, type: 3}
@@ -372,11 +318,11 @@ MonoBehaviour:
     - {fileID: 21300000, guid: b2b73e8251d6d8f4cb8fbb08ceb84383, type: 3}
     - {fileID: 21300000, guid: 3d5be6577633a014c8aab21553ef65db, type: 3}
     m_enemyGroup:
-    - m_enemyType: 0
+    - m_enemyType: 10
       m_locationType: 0
       m_targetType: 0
-      m_count: 5
-      m_interval: 10
+      m_count: 1
+      m_interval: 0
       m_distance: 50
       m_isItem: 0
 --- !u!114 &347021462
@@ -391,6 +337,96 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8950e5821b6dd4a45b7335741f531826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &347021463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347021458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57d67dd7bdb72d49b9cf50548544c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_uiScore: {fileID: 545718870}
+  m_gameClear: {fileID: 356815949}
+--- !u!1 &356815949
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 356815950}
+  - component: {fileID: 356815952}
+  - component: {fileID: 356815951}
+  m_Layer: 5
+  m_Name: GameClear
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &356815950
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356815949}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 550956021}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 294, y: 70}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &356815951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356815949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 6f2d29e57fd099b49b981efb2d90a7a9, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &356815952
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356815949}
+  m_CullTransparentMesh: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,6 +749,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 17605567}
+  - {fileID: 356815950}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

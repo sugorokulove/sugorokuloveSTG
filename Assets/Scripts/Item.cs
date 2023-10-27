@@ -36,7 +36,7 @@ public class Item : ObjectBase
     /// </summary>
     public void Remove()
     {
-        GameInfo.Instance.UpdateScore(m_score);
+        UIManager.Instance.UpdateScore(m_score);
         Destroy(gameObject);
     }
 }

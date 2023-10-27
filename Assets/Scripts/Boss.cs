@@ -156,9 +156,12 @@ public class Boss : EnemyBase
         {
             m_timer = 0;
 
-            float px = Transform.position.x + Random.Range(-100, 100);
-            float py = Transform.position.y + Random.Range(-100, 100);
-            ResourceGenerator.GenerateEnemyExplosion(new Vector3(px, py));
+            for(int i = 0; i < 3; i++)
+            {
+                float px = Transform.position.x + Random.Range(-100, 100);
+                float py = Transform.position.y + Random.Range(-100, 100);
+                ResourceGenerator.GenerateEnemyExplosion(new Vector3(px, py));
+            }
 
             m_count++;
             if (m_count > 30)
@@ -174,6 +177,7 @@ public class Boss : EnemyBase
 
                 sequence.AppendCallback(() =>
                 {
+                    GameInfo.Instance.Player.State = Player.StateType.Exit;
                     m_state = 10;
                     Destroy(gameObject);
                 });

@@ -3,18 +3,38 @@ using UnityEngine.Assertions;
 
 public class Player : ObjectBase
 {
+    public enum StateType
+    {
+        None = 0,
+        Entry,
+        Control,
+        Exit,
+        GameEnd
+    }
+
     private const int ShootWaitTime = 40;               // 弾の間隔値
     private const float PowerUpSpeed = 0.25f;           // 自機の速度調整
 
     [SerializeField] SpriteFlash m_flash;               // 白点滅用
     [SerializeField] Sprite[] m_costumes;               // コスチューム画像
 
-    private int m_state = 0;                            // 状態
+    private StateType m_state = StateType.None;         // 状態
     private bool m_isDamage = false;                    // 無敵判定
     private int m_shootWait = 0;                        // 弾の間隔用
     private float m_speedMin, m_speedMax;               // 自機の速度の最小値/最大値
+    private float m_exitSpeed;                          // 退場速度
 
-    public bool IsDamage { get => m_isDamage; set => m_isDamage = value; }
+    public bool IsDamage
+    {
+        get => m_isDamage;
+        set => m_isDamage = value;
+    }
+
+    public StateType State
+    {
+        get => m_state;
+        set => m_state = value;
+    }
 
     /// <summary>
     /// 初期化
@@ -25,11 +45,12 @@ public class Player : ObjectBase
 
         Initialize();
 
-        m_state = 1;
+        m_state = StateType.Entry;
         m_isDamage = false;
         m_shootWait = 0;
         m_speedMin = Speed;
         m_speedMax = Speed + PowerUpSpeed * GameInfo.PowerMax;
+        m_exitSpeed = 0.0f;
 
         SetImageByPower();
 
@@ -45,11 +66,17 @@ public class Player : ObjectBase
 
         switch (m_state)
         {
-            case 1:
+            case StateType.Entry:
                 PlayerEntry();
                 break;
-            case 2:
+            case StateType.Control:
                 PlayerControl();
+                break;
+            case StateType.Exit:
+                PlayerExit();
+                break;
+            case StateType.GameEnd:
+                PlayerEnd();
                 break;
         }
     }
@@ -90,7 +117,7 @@ public class Player : ObjectBase
         position.y++;
         if (position.y >= -120)
         {
-            m_state = 2;
+            m_state = StateType.Control;
             m_isDamage = true;
         }
         m_flash.Flash();
@@ -164,6 +191,64 @@ public class Player : ObjectBase
     }
 
     /// <summary>
+    /// 自機退場
+    /// </summary>
+    void PlayerExit()
+    {
+        var position = Transform.position;
+        position.y += m_exitSpeed;
+        m_exitSpeed += 0.1f;
+        Transform.position = position;
+
+        if (position.y > GameInfo.Instance.ScreenBound.y + BoundSize.y)
+        {
+            State = StateType.None;
+            NextStage();
+        }
+    }
+
+    /// <summary>
+    /// ゲームクリア後キー待ち
+    /// </summary>
+    void PlayerEnd()
+    {
+        if (Input.anyKeyDown)
+        {
+            m_state = StateType.None;
+            StartCoroutine(GameInfo.Instance.MainGame.TransitionToTitle(0.0f));
+        }
+    }
+
+    /// <summary>
+    /// クリア or 次のステージか？
+    /// </summary>
+    void NextStage()
+    {
+        if (GameInfo.Instance.StageNo >= (GameInfo.Instance.StageCount - 1))
+        {
+            // クリア
+            UIManager.Instance.GameClear();
+            m_state = StateType.GameEnd;
+        }
+        else
+        {
+            // 次のステージ
+            GameInfo.Instance.StageNo++;
+            GameInfo.Instance.StageMove = 0.0f;
+            GameInfo.Instance.BackgroundManager.Initialize();
+
+            // 敵グループのリセット
+            GameInfo.Instance.EnemyGenerator.Reset();
+
+            // 自機の初期化
+            m_state = StateType.Entry;
+            m_isDamage = false;
+            m_exitSpeed = 0.0f;
+            Transform.position = new Vector3(0.0f, -(GameInfo.Instance.ScreenBound.y + BoundSize.y), 0.0f);
+        }
+    }
+
+    /// <summary>
     /// デバッグ操作
     /// </summary>
     void DebugControl()
@@ -228,7 +313,7 @@ public class Player : ObjectBase
 
         if (PowerDown(power))
         {
-            m_state = 3;
+            m_state = StateType.None;
             m_isDamage = false;
             ResourceGenerator.GeneratePlayerExplosion(Transform.position);
             GameInfo.Instance.MainGame.ReStart();

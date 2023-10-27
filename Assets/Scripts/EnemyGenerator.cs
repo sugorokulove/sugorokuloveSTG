@@ -26,6 +26,14 @@ public class EnemyGenerator : MonoBehaviour
     }
 
     /// <summary>
+    /// リセット
+    /// </summary>
+    public void Reset()
+    {
+        m_generatorIndex = 0;
+    }
+
+    /// <summary>
     /// 敵グループ生成(非同期)
     /// </summary>
     /// <param name="group">グループ情報</param>

@@ -80,7 +80,7 @@ public abstract class EnemyBase : ObjectBase
         if (m_hp <= 0)
         {
             m_hp = 0;
-            GameInfo.Instance.UpdateScore(m_score);
+            UIManager.Instance.UpdateScore(m_score);
             ItemGenerateCheck();
             ResourceGenerator.GenerateEnemyExplosion(Transform.position);
             Destroy(gameObject);

@@ -15,12 +15,17 @@ public class GameInfo : SingletonMonoBehaviour<GameInfo>
     [SerializeField] private MainGame m_mainGame;               // MainGameのインスタンス
     public MainGame MainGame => m_mainGame;
 
+    [SerializeField] private BackgroundManager m_bgManager;     // BackgroundManagerのインスタンス
+    public BackgroundManager BackgroundManager => m_bgManager;
+
+    [SerializeField] private EnemyGenerator m_enemyGenerator;   // EnemyGeneratorのインスタンス
+    public EnemyGenerator EnemyGenerator => m_enemyGenerator;
+
     [SerializeField] private int m_stock;                       // 残機数指定
     public int Stock => m_stock;
 
-    [SerializeField] private TextMeshProUGUI m_uiScore;         // スコア表示
-
     [SerializeField] private StageInfo[] m_stages;              // ステージ情報
+    public int StageCount => m_stages.Length;
     public Sprite[] StageBgFiles => m_stages[StageNo].Files;
     public EnemyGroup[] StageEnemyGroup => m_stages[StageNo].EnemyGroup;
 
@@ -63,21 +68,9 @@ public class GameInfo : SingletonMonoBehaviour<GameInfo>
         BulletCount = 0;
         PowerUpCount = 0;
 
-        UpdateScore(0);
-
         // 画面境界サイズ作成
         ScreenBound = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         ScreenBound = new Vector2(Mathf.Ceil(ScreenBound.x), Mathf.Ceil(ScreenBound.y));
         ScreenSize = ScreenBound * 2.0f;
-    }
-
-    /// <summary>
-    /// スコア更新
-    /// </summary>
-    /// <param name="score">加算するスコア</param>
-    public void UpdateScore(int score)
-    {
-        TotalScore += score;
-        m_uiScore.text = $"{TotalScore}";
     }
 }
