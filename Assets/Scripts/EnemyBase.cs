@@ -2,10 +2,17 @@
 
 public abstract class EnemyBase : ObjectBase
 {
+    enum AttackType
+    {
+        None = 0,       // 00:攻撃なし
+        Down,           // 01:真下
+        Direction,      // 02:進行方向
+        Snipe           // 03:狙撃
+    }
+
     [SerializeField] int m_hp;                              // HP
     [SerializeField] int m_score;                           // スコア
-    [SerializeField] bool m_isAttack;                       // 攻撃の有無
-    [SerializeField] bool m_snipe;                          // 狙撃弾にするか？
+    [SerializeField] AttackType m_type;                     // 攻撃方法
     [SerializeField] SpriteFlash m_flash;                   // 白点滅用
     [SerializeField] private Countdown m_countdown;         // 攻撃用カウントダウン
 
@@ -20,7 +27,7 @@ public abstract class EnemyBase : ObjectBase
     {
         m_judgeScreen = false;
 
-        if (m_isAttack)
+        if (m_type != AttackType.None)
         {
             m_countdown.Initialize(() => GenerateMissile());
         }
@@ -80,11 +87,19 @@ public abstract class EnemyBase : ObjectBase
         if (m_hp <= 0)
         {
             m_hp = 0;
-            UIManager.Instance.UpdateScore(m_score);
+            UpdateScore();
             ItemGenerateCheck();
             ResourceGenerator.GenerateEnemyExplosion(Transform.position);
             Destroy(gameObject);
         }
+    }
+
+    /// <summary>
+    /// スコア更新
+    /// </summary>
+    public void UpdateScore()
+    {
+        UIManager.Instance.UpdateScore(m_score);
     }
 
     /// <summary>
@@ -107,14 +122,22 @@ public abstract class EnemyBase : ObjectBase
     /// </summary>
     public void GenerateMissile()
     {
-        var move = Transform.up;
+        var move = Vector3.down;
 
-        if (m_snipe)
+        switch (m_type)
         {
-            if (GameInfo.Instance.Player != null)
-            {
-                move = (GameInfo.Instance.Player.Transform.position - Transform.position).normalized;
-            }
+            case AttackType.Down:
+                move = Vector3.down;
+                break;
+            case AttackType.Direction:
+                move = Transform.up;
+                break;
+            case AttackType.Snipe:
+                if (GameInfo.Instance.Player != null)
+                {
+                    move = (GameInfo.Instance.Player.Transform.position - Transform.position).normalized;
+                }
+                break;
         }
 
         ResourceGenerator.GenerateMissile(Transform.position, move);

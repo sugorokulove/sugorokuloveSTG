@@ -18,7 +18,11 @@ public class Enemy007 : EnemyBase
         Transform.position = new Vector3(px, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
 
         m_time = m_directionTime;
-        m_move = (GameInfo.Instance.Player.Transform.position - Transform.position).normalized * Speed;
+        m_move = Vector3.down * Speed;
+        if (GameInfo.Instance.Player != null)
+        {
+            m_move = (GameInfo.Instance.Player.Transform.position - Transform.position).normalized * Speed;
+        }
         Transform.rotation = Quaternion.FromToRotation(Vector3.up, m_move);
     }
 

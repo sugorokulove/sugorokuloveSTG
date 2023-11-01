@@ -143,6 +143,9 @@ public class Boss : EnemyBase
             var lasers = FindObjectsOfType<Laser>();
             foreach (var missile in missiles) { Destroy(missile.gameObject); }
             foreach (var laser in lasers) { Destroy(laser.gameObject); }
+
+            // スコア更新
+            UpdateScore();
         }
     }
 

@@ -67,8 +67,7 @@ public class Cannon : ObjectBase
         m_timer--;
         if (m_timer <= 0)
         {
-            //m_state = (StateType)Random.Range((int)StateType.Snipe, (int)StateType.Laser + 1);
-            m_state = 0;
+            m_state = (StateType)Random.Range((int)StateType.Snipe, (int)StateType.Laser + 1);
             m_count = 0;
             m_timer = 0;
         }

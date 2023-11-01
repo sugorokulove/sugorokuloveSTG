@@ -53,7 +53,9 @@ public class MainGame : MonoBehaviour
             -GameInfo.Instance.ScreenBound.x + GetStock * 16 + 16,
             -GameInfo.Instance.ScreenBound.y + 16);
 
-        m_stockList[GetStock] = ResourceGenerator.GenerateStock(position);
+        var stock = ResourceGenerator.GenerateStock();
+        UIManager.Instance.AddStock(stock);
+        m_stockList[GetStock] = stock;
     }
 
     /// <summary>
@@ -82,7 +84,7 @@ public class MainGame : MonoBehaviour
     /// </summary>
     void GenerateGameover()
     {
-        ResourceGenerator.GenerateGameover();
+        UIManager.Instance.GameOver();
 
         StartCoroutine(TransitionToTitle(3.0f));
     }

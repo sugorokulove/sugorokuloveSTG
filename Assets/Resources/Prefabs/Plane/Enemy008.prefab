@@ -103,8 +103,7 @@ MonoBehaviour:
   m_speed: 0.75
   m_hp: 1
   m_score: 200
-  m_isAttack: 0
-  m_snipe: 0
+  m_type: 3
   m_flash: {fileID: 4384442999791713182}
   m_countdown: {fileID: 8472287545214799334}
 --- !u!114 &4384442999791713182

@@ -103,11 +103,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65b687b65c7d99499a2f1e997f50e16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_speed: 1
+  m_speed: 0.2
   m_hp: 1
   m_score: 10000
-  m_isAttack: 0
-  m_snipe: 0
+  m_type: 0
   m_flash: {fileID: 4697651488564839326}
   m_countdown: {fileID: 5245365890370418710}
   m_cannons:

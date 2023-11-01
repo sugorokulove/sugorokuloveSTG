@@ -100,9 +100,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_speed: 0
-  m_hp: 10
+  m_hp: 100
   m_score: 2000
   m_flash: {fileID: 336294272007364627}
+  m_boss: {fileID: 0}
   m_cannon: {fileID: 5242680420126725687}
   m_costumes:
   - {fileID: 21300000, guid: 240d25018731dd04883c758fa9dca9b6, type: 3}

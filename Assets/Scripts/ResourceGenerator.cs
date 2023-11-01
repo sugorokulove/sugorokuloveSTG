@@ -26,10 +26,9 @@ public static class ResourceGenerator
     /// <summary>
     /// 残機の生成
     /// </summary>
-    public static GameObject GenerateStock(Vector3 position)
+    public static GameObject GenerateStock()
     {
         var stock = ResoucesLoad("Prefabs/UI/Stock");
-        stock.transform.position = position;
         return stock;
     }
 
@@ -104,14 +103,5 @@ public static class ResourceGenerator
         ResoucesLoad("Prefabs/Item/Item")
             .GetComponent<Item>()
             .Init(position);
-    }
-
-    /// <summary>
-    /// ゲームオーバー生成
-    /// </summary>
-    public static void GenerateGameover()
-    {
-        ResoucesLoad("Prefabs/UI/Gameover");
-        ResoucesLoad("Prefabs/UI/Veil");
     }
 }
