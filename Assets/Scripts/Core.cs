@@ -10,7 +10,7 @@ public class Core : ObjectBase
         Red
     }
 
-    [SerializeField] private int m_hp;              // HP現在値
+    [SerializeField] private int m_hp;              // HP設定用
     [SerializeField] private int m_score;           // スコア
     [SerializeField] private SpriteFlash m_flash;   // 点滅用
     [SerializeField] private Boss m_boss;           // ボス
@@ -18,16 +18,24 @@ public class Core : ObjectBase
     [SerializeField] private Sprite[] m_costumes;   // 色変化
 
     private State m_state;                          // 色
+    private int m_hpNow = 0;                        // HP現在値
     private int m_hpMax;                            // HP最大値
 
-    public int Hp => m_hp;
+    public int Hp => m_hpNow;
 
-    void Start()
+    public void Init()
     {
-        Initialize();
+        ObjectBaseInitialize();
+
+        m_flash.Reset();
 
         m_state = State.Grey;
         m_hpMax = m_hp;
+        m_hpNow = m_hpMax;
+
+        SpriteRenderer.sprite = m_costumes[(int)State.Grey];
+
+        gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -40,15 +48,15 @@ public class Core : ObjectBase
         {
             m_flash.FlashLoop(3);
 
-            m_hp -= power;
-            if (m_hp <= 0)
+            m_hpNow -= power;
+            if (m_hpNow <= 0)
             {
-                m_hp = 0;
+                m_hpNow = 0;
                 m_boss.IsDestroyed();
                 m_cannon.State = Cannon.StateType.Stop;
                 UIManager.Instance.UpdateScore(m_score);
                 ResourceGenerator.GenerateEnemyExplosion(Transform.position);
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
 
             SetImageFromHP();
@@ -61,11 +69,11 @@ public class Core : ObjectBase
     public void SetImageFromHP()
     {
         m_state = State.Blue;
-        if (m_hp < m_hpMax * 0.4f)
+        if (m_hpNow < m_hpMax * 0.4f)
         {
             m_state = State.Red;
         }
-        else if (m_hp < m_hpMax * 0.7f)
+        else if (m_hpNow < m_hpMax * 0.7f)
         {
             m_state = State.Yellow;
         }

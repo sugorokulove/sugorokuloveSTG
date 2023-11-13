@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 
-public class Item : ObjectBase
+public class Item : ObjectBase, IPoolable
 {
     [SerializeField] private int m_score;
     private Vector3 m_move = Vector3.zero;
+
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Item;
 
     /// <summary>
     /// 初期化
@@ -11,7 +13,7 @@ public class Item : ObjectBase
     /// <param name="position">初期位置・座標</param>
     public void Init(Vector3 position)
     {
-        Initialize();
+        ObjectBaseInitialize();
 
         Transform.position = position;
 
@@ -37,6 +39,6 @@ public class Item : ObjectBase
     public void Remove()
     {
         UIManager.Instance.UpdateScore(m_score);
-        Destroy(gameObject);
+        ObjectPoolManager.Instance.Return(this);
     }
 }

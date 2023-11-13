@@ -214,6 +214,7 @@ GameObject:
   - component: {fileID: 347021461}
   - component: {fileID: 347021462}
   - component: {fileID: 347021463}
+  - component: {fileID: 347021464}
   m_Layer: 0
   m_Name: Main Game
   m_TagString: Untagged
@@ -278,182 +279,182 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 2422fccc84d350e43a663470dc5abcf5, type: 3}
     - {fileID: 21300000, guid: a164d4a5d62313949bb1a5a3af052982, type: 3}
     m_enemyGroup:
-    - m_enemyType: 3
+    - m_enemyType: 6
       m_locationType: 1
       m_targetType: 1
       m_count: 5
       m_interval: 5
       m_distance: 50
       m_isItem: 1
-    - m_enemyType: 3
+    - m_enemyType: 6
       m_locationType: 1
       m_targetType: 1
       m_count: 5
       m_interval: 5
       m_distance: 150
       m_isItem: 1
-    - m_enemyType: 3
+    - m_enemyType: 6
       m_locationType: 1
       m_targetType: 1
       m_count: 5
       m_interval: 5
       m_distance: 250
       m_isItem: 1
-    - m_enemyType: 1
+    - m_enemyType: 4
       m_locationType: 0
       m_targetType: 0
       m_count: 5
       m_interval: 5
       m_distance: 350
       m_isItem: 0
-    - m_enemyType: 1
+    - m_enemyType: 4
       m_locationType: 0
       m_targetType: 0
       m_count: 5
       m_interval: 5
       m_distance: 450
       m_isItem: 0
-    - m_enemyType: 2
+    - m_enemyType: 5
       m_locationType: 2
       m_targetType: 0
       m_count: 11
       m_interval: 10
       m_distance: 550
       m_isItem: 0
-    - m_enemyType: 4
+    - m_enemyType: 7
       m_locationType: 2
       m_targetType: 2
       m_count: 11
       m_interval: 10
       m_distance: 850
       m_isItem: 0
-    - m_enemyType: 4
+    - m_enemyType: 7
       m_locationType: 2
       m_targetType: 2
       m_count: 11
       m_interval: 10
       m_distance: 950
       m_isItem: 0
-    - m_enemyType: 9
+    - m_enemyType: 12
       m_locationType: 2
       m_targetType: 3
       m_count: 11
       m_interval: 0
       m_distance: 1050
       m_isItem: 0
-    - m_enemyType: 3
+    - m_enemyType: 6
       m_locationType: 1
       m_targetType: 1
       m_count: 5
       m_interval: 5
       m_distance: 1250
       m_isItem: 1
-    - m_enemyType: 3
+    - m_enemyType: 6
       m_locationType: 1
       m_targetType: 1
       m_count: 5
       m_interval: 5
       m_distance: 1350
       m_isItem: 1
-    - m_enemyType: 7
+    - m_enemyType: 10
       m_locationType: 2
       m_targetType: 0
       m_count: 3
       m_interval: 100
       m_distance: 1450
       m_isItem: 0
-    - m_enemyType: 5
+    - m_enemyType: 8
       m_locationType: 0
       m_targetType: 0
       m_count: 5
       m_interval: 10
       m_distance: 1700
       m_isItem: 0
-    - m_enemyType: 5
+    - m_enemyType: 8
       m_locationType: 0
       m_targetType: 0
       m_count: 5
       m_interval: 10
       m_distance: 1800
       m_isItem: 0
-    - m_enemyType: 6
+    - m_enemyType: 9
       m_locationType: 2
       m_targetType: 0
       m_count: 11
       m_interval: 10
       m_distance: 1900
       m_isItem: 0
-    - m_enemyType: 1
+    - m_enemyType: 4
       m_locationType: 0
       m_targetType: 0
       m_count: 5
       m_interval: 5
       m_distance: 2200
       m_isItem: 0
-    - m_enemyType: 1
+    - m_enemyType: 4
       m_locationType: 0
       m_targetType: 0
       m_count: 5
       m_interval: 5
       m_distance: 2300
       m_isItem: 0
-    - m_enemyType: 4
+    - m_enemyType: 7
       m_locationType: 2
       m_targetType: 2
       m_count: 11
       m_interval: 10
       m_distance: 2400
       m_isItem: 0
-    - m_enemyType: 4
+    - m_enemyType: 7
       m_locationType: 2
       m_targetType: 2
       m_count: 11
       m_interval: 10
       m_distance: 2500
       m_isItem: 0
-    - m_enemyType: 8
+    - m_enemyType: 11
       m_locationType: 3
       m_targetType: 0
       m_count: 5
       m_interval: 10
       m_distance: 2600
       m_isItem: 0
-    - m_enemyType: 8
+    - m_enemyType: 11
       m_locationType: 3
       m_targetType: 0
       m_count: 5
       m_interval: 10
       m_distance: 2750
       m_isItem: 0
-    - m_enemyType: 7
+    - m_enemyType: 10
       m_locationType: 2
       m_targetType: 0
       m_count: 3
       m_interval: 100
       m_distance: 2850
       m_isItem: 0
-    - m_enemyType: 9
+    - m_enemyType: 12
       m_locationType: 2
       m_targetType: 3
       m_count: 11
       m_interval: 0
       m_distance: 3100
       m_isItem: 0
-    - m_enemyType: 3
+    - m_enemyType: 6
       m_locationType: 1
       m_targetType: 1
       m_count: 5
       m_interval: 5
       m_distance: 3300
       m_isItem: 1
-    - m_enemyType: 3
+    - m_enemyType: 6
       m_locationType: 1
       m_targetType: 1
       m_count: 5
       m_interval: 5
       m_distance: 3400
       m_isItem: 1
-    - m_enemyType: 10
+    - m_enemyType: 13
       m_locationType: 0
       m_targetType: 0
       m_count: 1
@@ -473,14 +474,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: f8707a5c5bfa9164283f3bfbcdd26c7a, type: 3}
     - {fileID: 21300000, guid: d76ee23f4eca0a34ea0874628ad4aa17, type: 3}
     m_enemyGroup:
-    - m_enemyType: 1
+    - m_enemyType: 4
       m_locationType: 0
       m_targetType: 0
       m_count: 5
       m_interval: 5
       m_distance: 50
       m_isItem: 1
-    - m_enemyType: 10
+    - m_enemyType: 13
       m_locationType: 0
       m_targetType: 0
       m_count: 1
@@ -500,14 +501,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: b2b73e8251d6d8f4cb8fbb08ceb84383, type: 3}
     - {fileID: 21300000, guid: 3d5be6577633a014c8aab21553ef65db, type: 3}
     m_enemyGroup:
-    - m_enemyType: 4
+    - m_enemyType: 7
       m_locationType: 2
       m_targetType: 2
       m_count: 11
       m_interval: 10
       m_distance: 50
       m_isItem: 1
-    - m_enemyType: 10
+    - m_enemyType: 13
       m_locationType: 0
       m_targetType: 0
       m_count: 1
@@ -542,6 +543,56 @@ MonoBehaviour:
   m_gameClear: {fileID: 356815949}
   m_gameOver: {fileID: 2105155503}
   m_stockLane: {fileID: 1496060869}
+--- !u!114 &347021464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347021458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e199da75c334344b5e8d6eb10e6542, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PoolRoot: {fileID: 1580874568}
+  m_objectPoolDatas:
+  - m_objectType: 1
+    m_prefab: {fileID: 7417392746889803469, guid: 98b0bb6f69c0a1d4182a39d19e9697af, type: 3}
+  - m_objectType: 2
+    m_prefab: {fileID: 2721923365362320896, guid: 09129b6a9429ce74286ed89ddb00d556, type: 3}
+  - m_objectType: 3
+    m_prefab: {fileID: 3820018437242451996, guid: 1b1e4d38b663a8b4db183367bce48379, type: 3}
+  - m_objectType: 4
+    m_prefab: {fileID: 4632643361287024922, guid: 9b9fb4f4a6c076442b1f16f15afdcef5, type: 3}
+  - m_objectType: 5
+    m_prefab: {fileID: 8463752394023323641, guid: 179d83ee3084e4a48a2fdbc8b4e5c13d, type: 3}
+  - m_objectType: 6
+    m_prefab: {fileID: 264652998921067313, guid: 34bfa9e8c2d853845ad7903ad68dc757, type: 3}
+  - m_objectType: 7
+    m_prefab: {fileID: 1066116226764900112, guid: 0555e6d8a04c80e469dc082f7d05b84f, type: 3}
+  - m_objectType: 8
+    m_prefab: {fileID: 4690951063139775621, guid: f4d4636b6601f8746b4da0ed23145f73, type: 3}
+  - m_objectType: 9
+    m_prefab: {fileID: 2768683887227304877, guid: 5104d1f9e09742b4790c864a335e3e4b, type: 3}
+  - m_objectType: 10
+    m_prefab: {fileID: 2908736200074600847, guid: d054617d95dfaae48983273c5782adb7, type: 3}
+  - m_objectType: 11
+    m_prefab: {fileID: 2021098957373945085, guid: 6196c3f82748b374998cdd47465fd873, type: 3}
+  - m_objectType: 12
+    m_prefab: {fileID: 1595545050805407881, guid: 8e2e6baf829f6b34bb198fdb36e0151d, type: 3}
+  - m_objectType: 13
+    m_prefab: {fileID: 8798937989622368337, guid: cb9889643138b6442980e401ceb8d078, type: 3}
+  - m_objectType: 14
+    m_prefab: {fileID: 5131027810224143444, guid: e275c2746d089c74ebf1e787cab9da23, type: 3}
+  - m_objectType: 15
+    m_prefab: {fileID: 4773454479051220223, guid: 439f26dcd744a9b4097d56f763c52830, type: 3}
+  - m_objectType: 16
+    m_prefab: {fileID: 8364150073978466392, guid: cf29b67d204f2d845a26ebd84cca203c, type: 3}
+  - m_objectType: 17
+    m_prefab: {fileID: 2857297227687594387, guid: 2c9078c398a05914caa9ca854391009c, type: 3}
+  - m_objectType: 18
+    m_prefab: {fileID: 1704244747391496656, guid: 89ae1e7b051389e4792478382790283e, type: 3}
 --- !u!1 &356815949
 GameObject:
   m_ObjectHideFlags: 0
@@ -1381,6 +1432,37 @@ MonoBehaviour:
   m_background:
   - {fileID: 2067780791}
   - {fileID: 1156790957}
+--- !u!1 &1580874567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1580874568}
+  m_Layer: 0
+  m_Name: ObjectPoolRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1580874568
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580874567}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 10000, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1701647571
 GameObject:
   m_ObjectHideFlags: 0

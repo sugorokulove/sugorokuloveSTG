@@ -13,8 +13,13 @@ public class ObjectBase : MonoBehaviour
     /// <summary>
     /// 初期化
     /// </summary>
-    public void Initialize()
+    public void ObjectBaseInitialize()
     {
+        if (Transform != null)
+        {
+            return;
+        }
+
         if (TryGetComponent<SpriteRenderer>(out var renderer))
         {
             SpriteRenderer = renderer;

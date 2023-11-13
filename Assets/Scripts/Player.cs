@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 
-public class Player : ObjectBase
+public class Player : ObjectBase, IPoolable
 {
     public enum StateType
     {
@@ -36,6 +36,8 @@ public class Player : ObjectBase
         set => m_state = value;
     }
 
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Player;
+
     /// <summary>
     /// 初期化
     /// </summary>
@@ -43,7 +45,7 @@ public class Player : ObjectBase
     {
         Assert.IsTrue(m_costumes.Length == GameInfo.PowerType, $"costumeは{GameInfo.PowerType}個、値が設定されている必要があります。");
 
-        Initialize();
+        ObjectBaseInitialize();
 
         m_state = StateType.Entry;
         m_isDamage = false;
@@ -51,6 +53,8 @@ public class Player : ObjectBase
         m_speedMin = Speed;
         m_speedMax = Speed + PowerUpSpeed * GameInfo.PowerMax;
         m_exitSpeed = 0.0f;
+
+        m_flash.Reset();
 
         SetImageByPower();
 
@@ -317,7 +321,7 @@ public class Player : ObjectBase
             m_isDamage = false;
             ResourceGenerator.GeneratePlayerExplosion(Transform.position);
             GameInfo.Instance.MainGame.ReStart();
-            Destroy(gameObject);
+            ObjectPoolManager.Instance.Return(this);
         }
     }
 }

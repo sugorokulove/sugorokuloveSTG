@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 
-public class Missile : ObjectBase
+public class Missile : ObjectBase, IPoolable
 {
     private Vector3 m_move = Vector3.zero;
+
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Missile;
 
     /// <summary>
     /// 初期化
@@ -10,7 +12,7 @@ public class Missile : ObjectBase
     /// <param name="position">初期位置・座標</param>
     public void Init(Vector3 position, Vector3 direction)
     {
-        Initialize();
+        ObjectBaseInitialize();
 
         m_move = direction * Speed;
 
@@ -30,7 +32,7 @@ public class Missile : ObjectBase
             JudgeOutOfScreenTop() ||
             JudgeOutOfScreenBottom())
         {
-            Destroy(gameObject);
+            ObjectPoolManager.Instance.Return(this);
         }
     }
 
@@ -44,7 +46,7 @@ public class Missile : ObjectBase
         if (collision.TryGetComponent<Player>(out var player))
         {
             player.Damage(1);
-            Destroy(gameObject);
+            ObjectPoolManager.Instance.Return(this);
         }
     }
 }

@@ -25,9 +25,11 @@ public class Cannon : ObjectBase
     public StateType State { get => m_state; set => m_state = value; }
     public Core Core => m_core;
 
-    void Start()
+    public void Init()
     {
-        Initialize();
+        ObjectBaseInitialize();
+
+        Core.Init();
 
         m_state = StateType.Stop;
         m_timer = 0;

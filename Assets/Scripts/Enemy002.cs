@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 
-public class Enemy002 : EnemyBase
+public class Enemy002 : EnemyBase, IPoolable
 {
     private Vector3 m_move = Vector3.zero;
+
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Enemy002;
 
     /// <summary>
     /// 初期化
     /// </summary>
     public override void Init(float px, Vector3 target)
     {
-        Initialize();
+        EnemyBaseInitialize();
 
         Transform.position = new Vector3(px, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
 

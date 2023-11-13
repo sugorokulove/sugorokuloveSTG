@@ -6,17 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class MainGame : MonoBehaviour
 {
-    private GameObject[] m_stockList = null;                                // 残機管理(GameObject)
+    private Stock[] m_stockList = null;                                // 残機管理(GameObject)
     public int GetStock => m_stockList.Where(obj => obj != null).Count();   // 残機数
 
     void Awake()
     {
-        m_stockList = new GameObject[GameInfo.Instance.Stock];
+        m_stockList = new Stock[GameInfo.Instance.Stock];
         Array.Fill(m_stockList, null);
     }
 
     void Start()
     {
+        // ObjectPoolの利用準備
+        ObjectPoolManager.Instance.CreatePoolTask();
+
         // 指定数残機追加
         for (int i = 0; i < GameInfo.Instance.Stock; i++)
         {
@@ -49,12 +52,7 @@ public class MainGame : MonoBehaviour
     /// </summary>
     private void AddStock()
     {
-        var position = new Vector3(
-            -GameInfo.Instance.ScreenBound.x + GetStock * 16 + 16,
-            -GameInfo.Instance.ScreenBound.y + 16);
-
         var stock = ResourceGenerator.GenerateStock();
-        UIManager.Instance.AddStock(stock);
         m_stockList[GetStock] = stock;
     }
 
@@ -63,7 +61,7 @@ public class MainGame : MonoBehaviour
     /// </summary>
     private void RemoveStock()
     {
-        Destroy(m_stockList[GetStock - 1]);
+        ObjectPoolManager.Instance.Return(m_stockList[GetStock - 1]);
         m_stockList[GetStock - 1] = null;
     }
 

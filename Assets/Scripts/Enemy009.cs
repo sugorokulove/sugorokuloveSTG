@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
 
-public class Enemy009 : EnemyBase
+public class Enemy009 : EnemyBase, IPoolable
 {
     private int m_state = 0;                        // 動作管理
     private int m_time = 0;                         // 待機時間
     private Vector3 m_move = Vector3.zero;          // 移動量
     private Vector3 m_relay = Vector3.zero;         // 中継地点の保存用
 
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Enemy009;
+
     /// <summary>
     /// 初期化
     /// </summary>
     public override void Init(float px, Vector3 target)
     {
-        Initialize();
+        EnemyBaseInitialize();
 
         Transform.position = new Vector3(px, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
 

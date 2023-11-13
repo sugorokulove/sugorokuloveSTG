@@ -10,7 +10,7 @@ public abstract class EnemyBase : ObjectBase
         Snipe           // 03:狙撃
     }
 
-    [SerializeField] int m_hp;                              // HP
+    [SerializeField] int m_hp;                              // HP設定用
     [SerializeField] int m_score;                           // スコア
     [SerializeField] AttackType m_type;                     // 攻撃方法
     [SerializeField] SpriteFlash m_flash;                   // 白点滅用
@@ -21,16 +21,24 @@ public abstract class EnemyBase : ObjectBase
 
     public EnemyGroup MemberGroup { get; set; }             // 所属しているグループ
 
+    private int m_hpNow = 0;                                // HP現在値
     private bool m_judgeScreen = false;                     // 画面内外判定用
 
-    void Start()
+    public void EnemyBaseInitialize()
     {
+        ObjectBaseInitialize();
+
+        m_flash.Reset();
+
+        m_hpNow = m_hp;
         m_judgeScreen = false;
 
         if (m_type != AttackType.None)
         {
             m_countdown.Initialize(() => GenerateMissile());
         }
+
+        Transform.rotation = Quaternion.FromToRotation(Vector3.up, Vector3.down);
     }
 
     /// <summary>
@@ -71,7 +79,7 @@ public abstract class EnemyBase : ObjectBase
             JudgeOutOfScreenTop() ||
             JudgeOutOfScreenBottom())
         {
-            Destroy(gameObject);
+            ObjectPoolManager.Instance.Return(this);
         }
     }
 
@@ -83,14 +91,17 @@ public abstract class EnemyBase : ObjectBase
     {
         m_flash.FlashLoop(3);
 
-        m_hp -= power;
-        if (m_hp <= 0)
+        if (m_hpNow > 0)
         {
-            m_hp = 0;
-            UpdateScore();
-            ItemGenerateCheck();
-            ResourceGenerator.GenerateEnemyExplosion(Transform.position);
-            Destroy(gameObject);
+            m_hpNow -= power;
+            if (m_hpNow <= 0)
+            {
+                m_hpNow = 0;
+                UpdateScore();
+                ItemGenerateCheck();
+                ResourceGenerator.GenerateEnemyExplosion(Transform.position);
+                ObjectPoolManager.Instance.Return(this);
+            }
         }
     }
 

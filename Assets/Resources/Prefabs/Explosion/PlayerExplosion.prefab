@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7874587050886266184}
   - component: {fileID: 2702896301567086057}
-  - component: {fileID: 7528108327290719732}
+  - component: {fileID: 96305813654031312}
   - component: {fileID: 5197693950371229142}
   m_Layer: 0
   m_Name: PlayerExplosion
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7528108327290719732
+--- !u!114 &96305813654031312
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8364150073978466392}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1f6b95a61851434a96fe50697ab8cbc, type: 3}
+  m_Script: {fileID: 11500000, guid: 497a9d48d6c26f148adab21d1ba8ace4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!95 &5197693950371229142

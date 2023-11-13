@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
 
-public class Enemy006 : EnemyBase
+public class Enemy006 : EnemyBase, IPoolable
 {
     [SerializeField] private float m_min, m_max;    // 移動距離用乱数の最小値と最大値
 
     private float m_moveCount = 0.0f;               // 移動距離
     private Vector3 m_move = Vector3.zero;          // 移動量
 
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Enemy006;
+
     /// <summary>
     /// 初期化
     /// </summary>
     public override void Init(float px, Vector3 target)
     {
-        Initialize();
+        EnemyBaseInitialize();
 
         Transform.position = new Vector3(px, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
 

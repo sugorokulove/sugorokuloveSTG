@@ -3,22 +3,11 @@
 public static class ResourceGenerator
 {
     /// <summary>
-    /// リソースの読み込み共通
-    /// </summary>
-    /// <param name="filename">ファイル名</param>
-    /// <returns>GameObject</returns>
-    private static GameObject ResoucesLoad(string filename)
-    {
-        var prefab = Resources.Load<GameObject>(filename);
-        return GameObject.Instantiate(prefab);
-    }
-
-    /// <summary>
     /// 自機の生成
     /// </summary>
     public static Player GeneratePlayer()
     {
-        var player = ResoucesLoad("Prefabs/Plane/Player").GetComponent<Player>();
+        var player = ObjectPoolManager.Instance.Rent(ObjectType.Player) as Player;
         player.Init();
         return player;
     }
@@ -26,9 +15,10 @@ public static class ResourceGenerator
     /// <summary>
     /// 残機の生成
     /// </summary>
-    public static GameObject GenerateStock()
+    public static Stock GenerateStock()
     {
-        var stock = ResoucesLoad("Prefabs/UI/Stock");
+        var stock = ObjectPoolManager.Instance.Rent(ObjectType.Stock).GetComponent<Stock>();
+        UIManager.Instance.AddStock(stock.gameObject);
         return stock;
     }
 
@@ -37,9 +27,8 @@ public static class ResourceGenerator
     /// </summary>
     public static void GenerateBullet(Vector3 position)
     {
-        ResoucesLoad("Prefabs/Bullet/Bullet")
-            .GetComponent<Bullet>()
-            .Init(position, GameInfo.Instance.PowerUpCount);
+        var bullet = ObjectPoolManager.Instance.Rent(ObjectType.Bullet) as Bullet;
+        bullet.Init(position, GameInfo.Instance.PowerUpCount);
 
         GameInfo.Instance.BulletCount++;
         GameInfo.Instance.BulletCount = Mathf.Min(GameInfo.Instance.BulletCount, GameInfo.BulletMax);
@@ -50,9 +39,8 @@ public static class ResourceGenerator
     /// </summary>
     public static void GeneratePlayerExplosion(Vector3 position)
     {
-        ResoucesLoad("Prefabs/Explosion/PlayerExplosion")
-            .GetComponent<Explosion>()
-            .Initialize(position);
+        var explostion = ObjectPoolManager.Instance.Rent(ObjectType.PlayerExplosion) as PlayerExplosion;
+        explostion.Initialize(position);
     }
 
     /// <summary>
@@ -60,7 +48,7 @@ public static class ResourceGenerator
     /// </summary>
     public static void GenerateEnemy(EnemyGroup group, int px, Vector3 target)
     {
-        var enemy = ResoucesLoad($"Prefabs/Plane/{group.EnemyType.ToString()}").GetComponent<EnemyBase>();
+        var enemy = ObjectPoolManager.Instance.Rent(group.EnemyType) as EnemyBase;
         enemy.Init(px * 40.0f, target);
         enemy.MemberGroup = group;
     }
@@ -70,9 +58,8 @@ public static class ResourceGenerator
     /// </summary>
     public static void GenerateEnemyExplosion(Vector3 position)
     {
-        ResoucesLoad("Prefabs/Explosion/EnemyExplosion")
-            .GetComponent<Explosion>()
-            .Initialize(position);
+        var explostion = ObjectPoolManager.Instance.Rent(ObjectType.EnemyExplosion) as EnemyExplosion;
+        explostion.Initialize(position);
     }
 
     /// <summary>
@@ -80,9 +67,8 @@ public static class ResourceGenerator
     /// </summary>
     public static void GenerateMissile(Vector3 position, Vector3 move)
     {
-        ResoucesLoad("Prefabs/Missile/Missile")
-            .GetComponent<Missile>()
-            .Init(position, move);
+        var missile = ObjectPoolManager.Instance.Rent(ObjectType.Missile) as Missile;
+        missile.Init(position, move);
     }
 
     /// <summary>
@@ -90,7 +76,7 @@ public static class ResourceGenerator
     /// </summary>
     public static void GenerateLaser(Vector3 position, int index)
     {
-        var laser = ResoucesLoad("Prefabs/Missile/Laser").GetComponent<Laser>();
+        var laser = ObjectPoolManager.Instance.Rent(ObjectType.Laser) as Laser;
         laser.Init(position);
         laser.CannonIndex = index;
     }
@@ -100,8 +86,7 @@ public static class ResourceGenerator
     /// </summary>
     public static void GenerateItem(Vector3 position)
     {
-        ResoucesLoad("Prefabs/Item/Item")
-            .GetComponent<Item>()
-            .Init(position);
+        var item = ObjectPoolManager.Instance.Rent(ObjectType.Item) as Item;
+        item.Init(position);
     }
 }

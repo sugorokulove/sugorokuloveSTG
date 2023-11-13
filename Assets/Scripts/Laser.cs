@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 
-public class Laser : ObjectBase
+public class Laser : ObjectBase, IPoolable
 {
     public int CannonIndex { get; set; } = 0;
+
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Laser;
 
     /// <summary>
     /// 初期化
@@ -10,7 +12,7 @@ public class Laser : ObjectBase
     /// <param name="position">初期位置・座標</param>
     public void Init(Vector3 position)
     {
-        Initialize();
+        ObjectBaseInitialize();
 
         Transform.position = new Vector3(position.x, position.y + BoundSize.y, 0.0f);
         Transform.rotation = Quaternion.FromToRotation(Vector3.up, Vector3.down);
@@ -30,7 +32,7 @@ public class Laser : ObjectBase
 
         if (JudgeOutOfScreenBottom())
         {
-            Destroy(gameObject);
+            ObjectPoolManager.Instance.Return(this);
         }
     }
 

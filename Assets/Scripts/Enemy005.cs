@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class Enemy005 : EnemyBase
+public class Enemy005 : EnemyBase, IPoolable
 {
     [SerializeField] private float m_x;     // 横幅
     [SerializeField] private float m_a;     // カーブ調整
@@ -10,12 +10,14 @@ public class Enemy005 : EnemyBase
 
     private bool m_turn = false;            // 方向転換フラグ
 
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Enemy005;
+
     /// <summary>
     /// 初期化
     /// </summary>
     public override void Init(float px, Vector3 target)
     {
-        Initialize();
+        EnemyBaseInitialize();
 
         m_turn = false;
 

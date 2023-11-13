@@ -16,6 +16,6 @@ public class Explosion : MonoBehaviour
     /// </summary>
     void OnExplosionExit()
     {
-        Destroy(gameObject);
+        ObjectPoolManager.Instance.Return(this);
     }
 }

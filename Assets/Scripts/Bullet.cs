@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 
-public class Bullet : ObjectBase
+public class Bullet : ObjectBase, IPoolable
 {
     [SerializeField] Sprite[] m_costumes;           // パワーアップ画像
 
     private int m_power = 0;                        // 弾の威力(自機のパワーアップ回数)
     private Vector3 m_move = Vector3.zero;          // 弾の移動量
+
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Bullet;
 
     /// <summary>
     /// 初期化
@@ -17,7 +19,7 @@ public class Bullet : ObjectBase
     {
         Assert.IsTrue(m_costumes.Length == GameInfo.PowerType, $"costumeは{GameInfo.PowerType}個、値が設定されている必要があります。");
 
-        Initialize();
+        ObjectBaseInitialize();
 
         Transform.position = position;
 
@@ -71,8 +73,10 @@ public class Bullet : ObjectBase
     /// </summary>
     private void Remove()
     {
-        GameInfo.Instance.BulletCount--;
-        GameInfo.Instance.BulletCount = Mathf.Max(GameInfo.Instance.BulletCount, 0);
-        Destroy(gameObject);
+        if (GameInfo.Instance.BulletCount > 0)
+        {
+            GameInfo.Instance.BulletCount--;
+            ObjectPoolManager.Instance.Return(this);
+        }
     }
 }

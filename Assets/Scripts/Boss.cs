@@ -2,7 +2,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class Boss : EnemyBase
+public class Boss : EnemyBase, IPoolable
 {
     // 移動方向設定
     private static readonly Vector3[] NextMove = new Vector3[8]
@@ -24,13 +24,26 @@ public class Boss : EnemyBase
     private int m_timer = 0;                        // 生成間隔
     private Vector3 m_move = Vector3.zero;          // 移動量
 
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Boss;
+
     /// <summary>
     /// 初期化
     /// </summary>
     public override void Init(float px, Vector3 target)
     {
-        Initialize();
+        EnemyBaseInitialize();
         SetSize(0.5f);
+
+        var renderers = GetComponentsInChildren<Renderer>();
+        foreach (var renderer in renderers)
+        {
+            renderer.material.DOFade(1, 0.0f);
+        }
+
+        foreach (var c in m_cannons)
+        {
+            c.Init();
+        }
 
         Transform.position = new Vector3(px, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
 
@@ -141,8 +154,14 @@ public class Boss : EnemyBase
             // Scene上のミサイルとレーザーを全て削除
             var missiles = FindObjectsOfType<Missile>();
             var lasers = FindObjectsOfType<Laser>();
-            foreach (var missile in missiles) { Destroy(missile.gameObject); }
-            foreach (var laser in lasers) { Destroy(laser.gameObject); }
+            foreach (var missile in missiles)
+            {
+                ObjectPoolManager.Instance.Return(missile);
+            }
+            foreach (var laser in lasers)
+            {
+                ObjectPoolManager.Instance.Return(laser);
+            }
 
             // スコア更新
             UpdateScore();
@@ -182,7 +201,7 @@ public class Boss : EnemyBase
                 {
                     GameInfo.Instance.Player.State = Player.StateType.Exit;
                     m_state = 10;
-                    Destroy(gameObject);
+                    ObjectPoolManager.Instance.Return(this);
                 });
             }
         }

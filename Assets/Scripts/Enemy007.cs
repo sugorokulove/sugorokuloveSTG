@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Enemy007 : EnemyBase
+public class Enemy007 : EnemyBase, IPoolable
 {
     [SerializeField] private int m_directionTime = 10;
     [SerializeField] private float m_angleSpeed = 3.0f;
@@ -8,12 +8,14 @@ public class Enemy007 : EnemyBase
     private int m_time = 0;
     private Vector3 m_move = Vector3.zero;          // 移動量
 
+    public ObjectType BaseObjectType { get; set; } = ObjectType.Enemy007;
+
     /// <summary>
     /// 初期化
     /// </summary>
     public override void Init(float px, Vector3 target)
     {
-        Initialize();
+        EnemyBaseInitialize();
 
         Transform.position = new Vector3(px, GameInfo.Instance.ScreenBound.y + BoundSize.y, 0.0f);
 

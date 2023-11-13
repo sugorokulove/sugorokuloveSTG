@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,6 +50,11 @@ public class SpriteFlash : MonoBehaviour {
             return;
         }
 
+        if (!gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
         flashCoroutine = DoFlash();
         StartCoroutine(flashCoroutine);
     }
@@ -79,6 +83,11 @@ public class SpriteFlash : MonoBehaviour {
     /// </summary>
     public void FlashLoop(int repeat = -1)
     {
+        if (!gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
         flashCoroutine = DoFlashLoop(repeat);
         StartCoroutine(flashCoroutine);
     }
@@ -124,4 +133,11 @@ public class SpriteFlash : MonoBehaviour {
         mat.SetFloat("_FlashAmount", flashAmount);
     }
 
+    /// <summary>
+    /// 点滅リセット
+    /// </summary>
+    public void Reset()
+    {
+        SetFlashAmount(0);
+    }
 }

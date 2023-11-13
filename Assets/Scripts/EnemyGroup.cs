@@ -1,21 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-public enum EnemyType
-{
-    None = 0,
-    Enemy001,
-    Enemy002,
-    Enemy003,
-    Enemy004,
-    Enemy005,
-    Enemy006,
-    Enemy007,
-    Enemy008,
-    Enemy009,
-    Boss
-}
-
 public enum LocationType
 {
     None = 0,
@@ -35,7 +20,7 @@ public enum TargetType
 [Serializable]
 public class EnemyGroup
 {
-    [SerializeField] EnemyType m_enemyType;         // 敵種類
+    [SerializeField] ObjectType m_enemyType;        // 敵種類
     [SerializeField] LocationType m_locationType;   // 出現種類
     [SerializeField] TargetType m_targetType;       // ターゲット種類
     [SerializeField] int m_count;                   // 個数
@@ -43,7 +28,7 @@ public class EnemyGroup
     [SerializeField] float m_distance;              // 距離
     [SerializeField] bool m_isItem;                 // アイテムの生成の有無
 
-    public EnemyType EnemyType => m_enemyType;
+    public ObjectType EnemyType => m_enemyType;
     public LocationType LocationType => m_locationType;
     public TargetType TargetType => m_targetType;
     public int Count { get => m_count; set => m_count = value; }
