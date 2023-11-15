@@ -22,6 +22,7 @@ public class Boss : EnemyBase, IPoolable
     private int m_state = 0;                        // 動作管理
     private int m_count = 0;                        // 生成数カウント
     private int m_timer = 0;                        // 生成間隔
+    private float m_velocity = 0.0f;                // 速度変更用
     private Vector3 m_move = Vector3.zero;          // 移動量
 
     public ObjectType BaseObjectType { get; set; } = ObjectType.Boss;
@@ -50,7 +51,8 @@ public class Boss : EnemyBase, IPoolable
         m_state = 1;
         m_count = 0;
         m_timer = 0;
-        m_move = Vector3.down * Speed;
+        m_velocity = Speed;
+        m_move = Vector3.down * m_velocity;
     }
 
     /// <summary>
@@ -69,7 +71,7 @@ public class Boss : EnemyBase, IPoolable
                         cannon.Core.SetImageFromHP();
                     }
 
-                    Speed = 0.5f;
+                    m_velocity = 0.5f;
                     CreateDirection(0.0f, 40.0f);
                 }
                 break;
@@ -135,7 +137,7 @@ public class Boss : EnemyBase, IPoolable
             m_state = Random.Range(1, 4) * 2;
         }
 
-        m_move = NextMove[m_state] * Speed;
+        m_move = NextMove[m_state] * m_velocity;
         Transform.position = new Vector3(x, y, 0.0f);
     }
 

@@ -21,8 +21,7 @@ public class Player : ObjectBase, IPoolable
     private StateType m_state = StateType.None;         // 状態
     private bool m_isDamage = false;                    // 無敵判定
     private int m_shootWait = 0;                        // 弾の間隔用
-    private float m_speedMin, m_speedMax;               // 自機の速度の最小値/最大値
-    private float m_exitSpeed;                          // 退場速度
+    private float m_velocity;                           // 速度変更用
 
     public bool IsDamage
     {
@@ -50,11 +49,9 @@ public class Player : ObjectBase, IPoolable
         m_state = StateType.Entry;
         m_isDamage = false;
         m_shootWait = 0;
-        m_speedMin = Speed;
-        m_speedMax = Speed + PowerUpSpeed * GameInfo.PowerMax;
-        m_exitSpeed = 0.0f;
-
         m_flash.Reset();
+
+        SetVelocity();
 
         SetImageByPower();
 
@@ -141,22 +138,22 @@ public class Player : ObjectBase, IPoolable
         // キーボード操作
         if (Input.GetKey(KeyCode.D))
         {
-            direction.x += Speed;
+            direction.x += m_velocity;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            direction.x -= Speed;
+            direction.x -= m_velocity;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            direction.y += Speed;
+            direction.y += m_velocity;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            direction.y -= Speed;
+            direction.y -= m_velocity;
         }
 
-        position += direction.normalized * Speed;
+        position += direction.normalized * m_velocity;
 
         // 画面内移動範囲
         if (position.x <= -(GameInfo.Instance.ScreenBound.x - BoundSize.x))
@@ -200,8 +197,8 @@ public class Player : ObjectBase, IPoolable
     void PlayerExit()
     {
         var position = Transform.position;
-        position.y += m_exitSpeed;
-        m_exitSpeed += 0.1f;
+        position.y += m_velocity;
+        m_velocity += 0.1f;
         Transform.position = position;
 
         if (position.y > GameInfo.Instance.ScreenBound.y + BoundSize.y)
@@ -247,7 +244,7 @@ public class Player : ObjectBase, IPoolable
             // 自機の初期化
             m_state = StateType.Entry;
             m_isDamage = false;
-            m_exitSpeed = 0.0f;
+            SetVelocity();
             Transform.position = new Vector3(0.0f, -(GameInfo.Instance.ScreenBound.y + BoundSize.y), 0.0f);
         }
     }
@@ -291,7 +288,7 @@ public class Player : ObjectBase, IPoolable
     {
         GameInfo.Instance.PowerUpCount = Mathf.Min(GameInfo.PowerMax, GameInfo.Instance.PowerUpCount + 1);
         SetImageByPower();
-        Speed = Mathf.Min(m_speedMax, Speed + PowerUpSpeed);
+        SetVelocity();
     }
 
     /// <summary>
@@ -302,9 +299,17 @@ public class Player : ObjectBase, IPoolable
         int result = GameInfo.Instance.PowerUpCount - power;
         GameInfo.Instance.PowerUpCount = Mathf.Max(0, result);
         SetImageByPower();
-        Speed = Mathf.Max(m_speedMin, Speed - PowerUpSpeed);
+        SetVelocity();
 
         return result < 0;
+    }
+
+    /// <summary>
+    /// 速度設定
+    /// </summary>
+    void SetVelocity()
+    {
+        m_velocity = Speed + GameInfo.Instance.PowerUpCount * PowerUpSpeed;
     }
 
     /// <summary>
