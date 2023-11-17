@@ -15,6 +15,7 @@ public class Player : ObjectBase, IPoolable
     private const int ShootWaitTime = 40;               // 弾の間隔値
     private const float PowerUpSpeed = 0.25f;           // 自機の速度調整
 
+    [SerializeField] bool m_isTouch;                    // タッチ操作か？
     [SerializeField] SpriteFlash m_flash;               // 白点滅用
     [SerializeField] Sprite[] m_costumes;               // コスチューム画像
 
@@ -71,7 +72,14 @@ public class Player : ObjectBase, IPoolable
                 PlayerEntry();
                 break;
             case StateType.Control:
-                PlayerControl();
+                if (m_isTouch)
+                {
+                    TouchPlayerControl();
+                }
+                else
+                {
+                    PlayerControl();
+                }
                 break;
             case StateType.Exit:
                 PlayerExit();
@@ -156,22 +164,7 @@ public class Player : ObjectBase, IPoolable
         position += direction.normalized * m_velocity;
 
         // 画面内移動範囲
-        if (position.x <= -(GameInfo.Instance.ScreenBound.x - BoundSize.x))
-        {
-            position.x = -(GameInfo.Instance.ScreenBound.x - BoundSize.x);
-        }
-        if (position.x >= (GameInfo.Instance.ScreenBound.x - BoundSize.x))
-        {
-            position.x = (GameInfo.Instance.ScreenBound.x - BoundSize.x);
-        }
-        if (position.y <= -(GameInfo.Instance.ScreenBound.y - BoundSize.y))
-        {
-            position.y = -(GameInfo.Instance.ScreenBound.y - BoundSize.y);
-        }
-        if (position.y >= (GameInfo.Instance.ScreenBound.y - BoundSize.y))
-        {
-            position.y = (GameInfo.Instance.ScreenBound.y - BoundSize.y);
-        }
+        position = PlayerAreaLimit(position);
 
         // 弾発射
         m_shootWait--;
@@ -189,6 +182,82 @@ public class Player : ObjectBase, IPoolable
         }
 
         Transform.position = position;
+    }
+
+    /// <summary>
+    /// タッチ操作
+    /// </summary>
+    void TouchPlayerControl()
+    {
+        var position = Transform.position;
+
+        // エディタ、実機で処理を分ける
+        if (Application.isEditor)
+        {
+            // エディタで実行中
+            if (Input.GetMouseButton(0))
+            {
+                var point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                point.z = 0;
+                position += (point - position).normalized * m_velocity;
+            }
+        }
+        else
+        {
+            // 実機で実行中
+            if (Input.touchCount > 0)
+            {
+                // タッチ情報の取得
+                Touch touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Moved)
+                {
+                    var point = Camera.main.ScreenToWorldPoint(touch.position);
+                    point.z = 0;
+                    position += (point - position).normalized * m_velocity;
+                }
+            }
+        }
+
+        // 画面内移動範囲
+        position = PlayerAreaLimit(position);
+
+        Transform.position = position;
+
+        // 弾発射
+        m_shootWait--;
+        if ((m_shootWait <= 0) && (GameInfo.Instance.BulletCount < GameInfo.BulletMax))
+        {
+            m_shootWait = ShootWaitTime;
+            ResourceGenerator.GenerateBullet(
+                    new Vector3(Transform.position.x, Transform.position.y + 10));
+        }
+    }
+
+    /// <summary>
+    /// 画面内移動範囲
+    /// </summary>
+    /// <param name="position">現在値</param>
+    /// <returns>制限後</returns>
+    Vector3 PlayerAreaLimit(Vector3 position)
+    {
+        if (position.x <= -(GameInfo.Instance.ScreenBound.x - BoundSize.x))
+        {
+            position.x = -(GameInfo.Instance.ScreenBound.x - BoundSize.x);
+        }
+        if (position.x >= (GameInfo.Instance.ScreenBound.x - BoundSize.x))
+        {
+            position.x = (GameInfo.Instance.ScreenBound.x - BoundSize.x);
+        }
+        if (position.y <= -(GameInfo.Instance.ScreenBound.y - BoundSize.y))
+        {
+            position.y = -(GameInfo.Instance.ScreenBound.y - BoundSize.y);
+        }
+        if (position.y >= (GameInfo.Instance.ScreenBound.y - BoundSize.y))
+        {
+            position.y = (GameInfo.Instance.ScreenBound.y - BoundSize.y);
+        }
+        return position;
     }
 
     /// <summary>
